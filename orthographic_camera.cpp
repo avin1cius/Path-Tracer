@@ -27,7 +27,7 @@ Ray OrthographicCamera::getWorldSpaceRay( const glm::vec2 &pixel_coord ) const
     float height = max_y_ - min_y_;
 
     glm::vec3 origin{ pixel_coord[0] / static_cast< float >( resolution_[0] ) * width + min_x_,
-                      pixel_coord[1] / static_cast< float >( resolution_[1] ) * height + min_y_,
+                      -pixel_coord[1] / static_cast< float >( resolution_[1] ) * height - min_y_,
                       0.0f };
 
     return Ray{ onb_.getBasisMatrix() * origin + position_, 

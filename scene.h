@@ -11,6 +11,11 @@
 #include "sphere.h"
 #include "triangle.h" 
 
+#include <assimp/Importer.hpp>      // C++ importer interface
+#include <assimp/scene.h>           // Output data structure
+#include <assimp/postprocess.h>     // Post processing flags
+#include <assimp/vector3.h>
+
 class Scene
 {
 public:
@@ -24,9 +29,10 @@ public:
 
     void load( void );
 
+    void LoadObject(const char * obj);
+
     std::vector< Primitive::PrimitiveUniquePtr > primitives_;
 
 };
 
 #endif /* SCENE_H_ */
-

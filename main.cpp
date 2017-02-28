@@ -20,12 +20,14 @@ int main( void )
                                 1.25f,
                                 3.0f, // distance
                                 glm::ivec2{ x_resolution, y_resolution }, 
-                                glm::vec3{ 0.0f, 0.0f,  1.0f },     // position
+                                glm::vec3{ 0.0f, 0.0f,  4.0f },     // position
                                 glm::vec3{ 0.0f, 1.0f,  0.0f },     // up
-                                glm::vec3{ 0.0f, 0.0f, -1.0f } };   // look at
+                                glm::vec3{ 0.0f, 0.0f,  -1.0f } };   // look at
     Scene scene{};
-    
+    char obj[20] = "monkey.obj";
+
     scene.load();
+    scene.LoadObject(obj);
 
     Buffer rendering_buffer{ x_resolution, y_resolution };
     glm::vec3 background_color{ 0.0f, 0.0f, 0.0f };
@@ -43,4 +45,3 @@ int main( void )
 
     return EXIT_SUCCESS;
 }
-

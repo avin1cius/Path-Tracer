@@ -28,10 +28,10 @@ Ray PerspectiveCamera::getWorldSpaceRay( const glm::vec2 &pixel_coord ) const
     float width = max_x_ - min_x_;
     float height = max_y_ - min_y_;
               
-    glm::vec3 direction{ ( pixel_coord[0]+0.5f )/ static_cast< float >( resolution_[0] ) * width + min_x_,
-                         ( pixel_coord[1]+0.5f )/ static_cast< float >( resolution_[1] ) * -height - min_y_,
-                         -distance_ };
+    glm::vec3 screen_point{ ( pixel_coord[0]+0.5f )/ static_cast< float >( resolution_[0] ) * width + min_x_,
+                            ( pixel_coord[1]+0.5f )/ static_cast< float >( resolution_[1] ) * -height + max_y_,
+                            -distance_ };
 
-    return Ray{ onb_.getBasisMatrix() * position_,
-                glm::normalize( onb_.getBasisMatrix() * direction ) };
+    return Ray{ position_, glm::normalize( onb_.getBasisMatrix() * screen_point ) };
 }
+

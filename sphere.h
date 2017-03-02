@@ -19,9 +19,9 @@ public:
 
     glm::vec3 center_ = { 0.0f, 0.0f, 0.0f };
 
-    float radius_= 1.0f;
+    glm::vec3 color_ = { 0.0f, 0.0f, 0.0f };  
 
-    glm::vec3 color_ = { 0.0f, 0.0f, 0.0f };
+    float radius_= 1.0f;    
 
 private:
 

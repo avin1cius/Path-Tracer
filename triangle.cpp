@@ -5,7 +5,7 @@ Triangle::Triangle( void )
 
 Triangle::Triangle( const glm::vec3 &p1,const glm::vec3 &p2, const glm::vec3 &p3, const glm::vec3 color) :
 	p1_{ p1 },
-    p2_{ p2 },
+	p2_{ p2 },
 	p3_{ p3 },
 	color_{ color }
 {}
@@ -56,8 +56,8 @@ bool Triangle::intersect( const Ray &ray,
 	glm::vec3 center_ = glm::vec3((p1_.x+p2_.x+p3_.x)/3.0f , (p1_.y+p2_.y+p3_.y)/3.0f , (p1_.z+p2_.z+p3_.z)/3.0f);
 
 	intersection_record.t_ =  t;
-    intersection_record.position_ = ray.origin_ +intersection_record.t_ * ray.direction_;
-    intersection_record.normal_ = glm::normalize( intersection_record.position_ - center_);
+	intersection_record.position_ = ray.origin_ +intersection_record.t_ * ray.direction_;
+	intersection_record.normal_ = glm::normalize( intersection_record.position_ - center_);
 	intersection_record.color_ = color_;
 
 	return true;

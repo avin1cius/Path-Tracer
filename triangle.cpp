@@ -3,10 +3,11 @@
 Triangle::Triangle( void )
 {}
 
-Triangle::Triangle( const glm::vec3 &p1,const glm::vec3 &p2, const glm::vec3 &p3) :
+Triangle::Triangle( const glm::vec3 &p1,const glm::vec3 &p2, const glm::vec3 &p3, const glm::vec3 color) :
         p1_{ p1 },
         p2_{ p2 },
-	p3_{ p3 }
+	p3_{ p3 },
+	color_{ color }
 {}
 
 bool Triangle::intersect( const Ray &ray,
@@ -81,6 +82,7 @@ bool Triangle::intersect( const Ray &ray,
 	intersection_record.t_ =  t;
     	intersection_record.position_ = ray.origin_ +intersection_record.t_ * ray.direction_;
     	intersection_record.normal_ = glm::normalize( intersection_record.position_ - center_);
+		intersection_record.color_ = color_;
 	return true;
 
 }

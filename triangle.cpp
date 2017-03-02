@@ -4,8 +4,8 @@ Triangle::Triangle( void )
 {}
 
 Triangle::Triangle( const glm::vec3 &p1,const glm::vec3 &p2, const glm::vec3 &p3, const glm::vec3 color) :
-        p1_{ p1 },
-        p2_{ p2 },
+	p1_{ p1 },
+    p2_{ p2 },
 	p3_{ p3 },
 	color_{ color }
 {}
@@ -13,36 +13,6 @@ Triangle::Triangle( const glm::vec3 &p1,const glm::vec3 &p2, const glm::vec3 &p3
 bool Triangle::intersect( const Ray &ray,
                         IntersectionRecord &intersection_record ) const
 {
-    
-	/*[a d g]
-      	  [b e h]
-          [c f i]
-
-    a = Xa - Xb
-    b = Ya - Yb
-    c = Za - Zb
-    d = Xa - Xc
-    e = Ya - Yc
-    f = Za - Zc
-    g = Xd
-    h = Yd
-    i = Zd
-    j = Xa - Xe
-    k = Ya - Ye
-    l = Za - Ze
-
-    
-    M = a(ei − hf ) + b(gf − di) + c(dh − eg)
-
-    β = (j(ei − hf ) + k(gf − di) + l(dh − eg)) / M
-
-    γ = (i(ak − jb) + h(jc − al) + g(bl − kc)) / M
-
-    t = -(f (ak − jb) + e(jc − al) + d(bl − kc)) / M
-
- */
-	
-
 	float a,b,c,d,e,f,g,h,i,j,k,l;
 	
 	a = (p1_.x - p2_.x);
@@ -57,22 +27,28 @@ bool Triangle::intersect( const Ray &ray,
 	j = (p1_.x - ray.origin_.x);
 	k = (p1_.y - ray.origin_.y);
 	l = (p1_.z - ray.origin_.z);
-	
-	
-	float M = a*(e*i - h*f) + b*(g*f - d*i) + c*(d*h - e*g);
 
-	float t = -(f*(a*k - j*b) + e*(j*c - a*l) + d*(b*l - k*c))/M;
+	float ei_minus_hf = e*i - h*f;
+	float gf_minus_di = g*f - d*i;
+	float dh_minus_eg = d*h - e*g;
+	float ak_minus_jb = a*k - j*b;
+	float jc_minus_al = j*c - a*l;
+	float bl_minus_kc = b*l - k*c;
+
+	float M = a*(ei_minus_hf) + b*(gf_minus_di) + c*(dh_minus_eg);	
+
+	float t = -(f*(ak_minus_jb) + e*(jc_minus_al) + d*(bl_minus_kc))/M;	
 
 	if(t < 0.0f)
-		return false;
+		return false;	
 
-	float gama = (i*(a*k - j*b) + h*(j*c - a*l) + g*(b*l - k*c))/M;
+	float gama = (i*(ak_minus_jb) + h*(jc_minus_al) + g*(bl_minus_kc))/M;
 
 	if(gama < 0.0f || gama > 1.0f)
+
 		return false;
 
-	float beta = (j*(e*i - h*f) + k*(g*f - d*i) + l*(d*h - e*g))/M;
-
+	float beta = (j*(ei_minus_hf) + k*(gf_minus_di) + l*(dh_minus_eg))/M;
 
 	if(beta < 0.0f || beta > (1.0f - gama))
 		return false;
@@ -80,10 +56,10 @@ bool Triangle::intersect( const Ray &ray,
 	glm::vec3 center_ = glm::vec3((p1_.x+p2_.x+p3_.x)/3.0f , (p1_.y+p2_.y+p3_.y)/3.0f , (p1_.z+p2_.z+p3_.z)/3.0f);
 
 	intersection_record.t_ =  t;
-    	intersection_record.position_ = ray.origin_ +intersection_record.t_ * ray.direction_;
-    	intersection_record.normal_ = glm::normalize( intersection_record.position_ - center_);
-		intersection_record.color_ = color_;
-	return true;
+    intersection_record.position_ = ray.origin_ +intersection_record.t_ * ray.direction_;
+    intersection_record.normal_ = glm::normalize( intersection_record.position_ - center_);
+	intersection_record.color_ = color_;
 
+	return true;
 }
 

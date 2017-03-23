@@ -3,10 +3,10 @@
 Sphere::Sphere( void )
 {}
 
-Sphere::Sphere( const glm::vec3 &center, const glm::vec3 &color, float radius ) :
+Sphere::Sphere( const glm::vec3 &center, float radius, const glm::vec3 &color ) :
         center_{ center },
-        color_{ color },
-        radius_{ radius }
+        radius_{ radius },
+        color_{ color }
         
 {}
 

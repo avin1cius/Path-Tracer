@@ -16,6 +16,7 @@ public:
     RayTracer( Camera &camera,
                const Scene &scene,
                const glm::vec3 background_color,
+               const size_t samples,
                Buffer &buffer );
 
     void integrate( void );
@@ -27,6 +28,8 @@ private:
     const Scene &scene_;
 
     glm::dvec3 background_color_;
+
+    const size_t samples_;
 
     Buffer &buffer_;
 

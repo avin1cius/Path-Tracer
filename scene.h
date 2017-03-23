@@ -30,7 +30,7 @@ public:
 
     void load( void );
 
-    void LoadObject(const char * obj);
+    void loadObject(const char * obj);
 
     std::vector< Primitive::PrimitiveUniquePtr > primitives_;
 

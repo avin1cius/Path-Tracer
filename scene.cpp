@@ -27,34 +27,33 @@ bool Scene::intersect( const Ray &ray,
 
 void Scene::load( void ) 
 {
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  0.5f, 0.5f,   -1.0f }, glm::vec3{  0.0f, 0.0f,   0.0f }, 0.2f } ) );
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{ -0.5f, 0.5f,   -1.0f }, glm::vec3{  0.0f, 0.0f,   0.0f }, 0.2f } ) );
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  0.5f,-0.5f,   -1.0f }, glm::vec3{  0.0f, 0.0f,   0.0f }, 0.2f } ) );
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  -0.5f, -0.5f, -1.0f }, glm::vec3{  0.0f, 0.0f,   0.0f }, 0.2f } ) );
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  0.5f, 0.5f,-1.0f }, 0.2f, glm::vec3{  0.0f, 0.0f,   0.0f } } ) );
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{ -0.5f, 0.5f,-1.0f }, 0.2f, glm::vec3{  0.0f, 0.0f,   0.0f } } ) );
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  0.5f,-0.5f,-1.0f }, 0.2f, glm::vec3{  0.0f, 0.0f,   0.0f } } ) );
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{ -0.5f,-0.5f,-1.0f }, 0.2f, glm::vec3{  0.0f, 0.0f,   0.0f } } ) );
     
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  0.5f, 0.5f,   -2.0f }, glm::vec3{  0.0f, 0.0f,   0.0f }, 0.2f } ) );
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{ -0.5f, 0.5f,   -2.0f }, glm::vec3{  0.0f, 0.0f,   0.0f }, 0.2f } ) );
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  0.5f,-0.5f,   -2.0f }, glm::vec3{  0.0f, 0.0f,   0.0f }, 0.2f } ) );
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  -0.5f, -0.5f, -2.0f }, glm::vec3{  0.0f, 0.0f,   0.0f }, 0.2f } ) );
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  0.5f, 0.5f,-2.0f }, 0.2f, glm::vec3{  0.0f, 0.0f,   0.0f } } ) );
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{ -0.5f, 0.5f,-2.0f }, 0.2f, glm::vec3{  0.0f, 0.0f,   0.0f } } ) );
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  0.5f,-0.5f,-2.0f }, 0.2f, glm::vec3{  0.0f, 0.0f,   0.0f } } ) );
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{ -0.5f,-0.5f,-2.0f }, 0.2f, glm::vec3{  0.0f, 0.0f,   0.0f } } ) );
     
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  0.5f, 0.5f,   -3.0f }, glm::vec3{  0.0f, 0.0f,   0.0f }, 0.2f } ) );
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{ -0.5f, 0.5f,   -3.0f }, glm::vec3{  0.0f, 0.0f,   0.0f }, 0.2f } ) );
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  0.5f,-0.5f,   -3.0f }, glm::vec3{  0.0f, 0.0f,   0.0f }, 0.2f } ) );
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  -0.5f, -0.5f, -3.0f }, glm::vec3{  0.0f, 0.0f,   0.0f }, 0.2f } ) );
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  0.5f, 0.5f,-3.0f }, 0.2f, glm::vec3{  0.0f, 0.0f,   0.0f } } ) );
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{ -0.5f, 0.5f,-3.0f }, 0.2f, glm::vec3{  0.0f, 0.0f,   0.0f } } ) );
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  0.5f,-0.5f,-3.0f }, 0.2f, glm::vec3{  0.0f, 0.0f,   0.0f } } ) );
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{ -0.5f,-0.5f,-3.0f }, 0.2f, glm::vec3{  0.0f, 0.0f,   0.0f } } ) );
     
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  0.5f, 0.5f,   -4.0f }, glm::vec3{  0.0f, 0.0f,   0.0f }, 0.2f } ) );
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{ -0.5f, 0.5f,   -4.0f }, glm::vec3{  0.0f, 0.0f,   0.0f }, 0.2f } ) );
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  0.5f,-0.5f,   -4.0f }, glm::vec3{  0.0f, 0.0f,   0.0f }, 0.2f } ) );
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  -0.5f, -0.5f, -4.0f }, glm::vec3{  0.0f, 0.0f,   0.0f }, 0.2f } ) );
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  0.5f, 0.5f,-4.0f }, 0.2f, glm::vec3{  0.0f, 0.0f,   0.0f } } ) );
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{ -0.5f, 0.5f,-4.0f }, 0.2f, glm::vec3{  0.0f, 0.0f,   0.0f } } ) );
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  0.5f,-0.5f,-4.0f }, 0.2f, glm::vec3{  0.0f, 0.0f,   0.0f } } ) );
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{ -0.5f,-0.5f,-4.0f }, 0.2f, glm::vec3{  0.0f, 0.0f,   0.0f } } ) );
     
-
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  0.5f, 0.5f,   -5.0f }, glm::vec3{  0.0f, 0.0f,   0.0f }, 0.2f } ) );
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{ -0.5f, 0.5f,   -5.0f }, glm::vec3{  0.0f, 0.0f,   0.0f }, 0.2f } ) );
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  0.5f,-0.5f,   -5.0f }, glm::vec3{  0.0f, 0.0f,   0.0f }, 0.2f } ) );
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  -0.5f, -0.5f, -5.0f }, glm::vec3{  0.0f, 0.0f,   0.0f }, 0.2f } ) );
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  0.5f, 0.5f,-5.0f }, 0.2f, glm::vec3{  0.0f, 0.0f,   0.0f } } ) );
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{ -0.5f, 0.5f,-5.0f }, 0.2f, glm::vec3{  0.0f, 0.0f,   0.0f } } ) );
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  0.5f,-0.5f,-5.0f }, 0.2f, glm::vec3{  0.0f, 0.0f,   0.0f } } ) );
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{ -0.5f,-0.5f,-5.0f }, 0.2f, glm::vec3{  0.0f, 0.0f,   0.0f } } ) );
 }
 
-void Scene::LoadObject(const char * obj)
+void Scene::loadObject(const char * obj)
 {
     Assimp::Importer importer;
     

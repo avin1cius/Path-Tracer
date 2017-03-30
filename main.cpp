@@ -18,9 +18,9 @@ int main( void )
                                 1.25f, 
                                -1.25f, 
                                 1.25f,
-                                1.00f, // distance
+                                2.00f, // distance
                                 glm::ivec2{ x_resolution, y_resolution }, 
-                                glm::vec3{ 0.0f, 0.0f, 2.0f },     // position
+                                glm::vec3{ 0.0f, 0.0f, 3.0f },     // position
                                 glm::vec3{ 0.0f, 1.0f, 0.0f },     // up
                                 glm::vec3{ 0.0f, 0.0f, -1.0f } };   // look at
     Scene scene{};
@@ -28,16 +28,19 @@ int main( void )
 
     //scene.load();
     scene.loadObject(obj);
-
-    Buffer rendering_buffer{ x_resolution, y_resolution };
-    size_t samples = 1; //samples per pixel
     glm::vec3 background_color{ 0.0f, 0.0f, 0.0f };
+    size_t samples = 1; //samples per pixel
+    size_t maximum_depth = 5;
+    Buffer rendering_buffer{ x_resolution, y_resolution };
+    
+    
 
     // Set up the renderer.
     RayTracer rt( camera,
                   scene,
                   background_color,
                   samples,
+                  maximum_depth,
                   rendering_buffer );
 
     rt.integrate(); // Renders the final image.

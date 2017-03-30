@@ -4,19 +4,40 @@ RayTracer::RayTracer( Camera &camera,
                       const Scene &scene,
                       const glm::vec3 background_color,
                       const size_t samples,
+                      const size_t maximum_depth,
                       Buffer &buffer ) :
         camera_( camera ),
         scene_( scene ),
         background_color_{ background_color },
         samples_{ samples},
+        maximum_depth_{ maximum_depth },
         buffer_( buffer )
 {}
+
+glm::vec3 RayTracer::L( Ray ray, size_t curr_depth ) //Rendering equation
+{
+    glm::vec3 Lo{ 0.0f, 0.0f, 0.0f };
+    glm::vec3 refl_ray{ 0.0f, 0.0f, 0.0f };
+
+    if ( curr_depth < maximum_depth_ )
+    {
+        if ( scene_.intersect ( ray, intersection_record ))
+        {
+            refl_ray = intersection_point.get_new_ray;
+
+            Lo = intersection_point.Le + 2.0 * M_PI * intersection_point.fr() *
+            L( &refl_ray, curr_depth++ ) * glm::dot( intersection_point.normal, refl_ray );
+
+        }
+    }
+    return Lo;
+}
 
 void RayTracer::integrate( void )
 {
     IntersectionRecord intersection_record;
 
-    glm::vec3 final_color{ 0.0f, 0.0f, 0.0f };
+    //glm::vec3 final_color{ 0.0f, 0.0f, 0.0f };
 
     // Image space origin (i.e. x = 0 and y = 0) at the top left corner.
 
@@ -49,11 +70,13 @@ void RayTracer::integrate( void )
 
                 if ( scene_.intersect( ray, intersection_record ) )
                     //buffer_.buffer_data_[x][y] = glm::vec3{ intersection_record.t_ * 0.2f };
-                    final_color = final_color + intersection_record.color_;                    
+                    //final_color = final_color + intersection_record.color_;
+                    buffer_.buffer_data_[x][y] = buffer_.buffer_data_[x][y] + L( ray, 0 );            
             }
 
-            buffer_.buffer_data_[x][y] = glm::vec3{ final_color / static_cast <float> (samples_) };
-            final_color = { 0.0f, 0.0f, 0.0f };
+            //buffer_.buffer_data_[x][y] = glm::vec3{ final_color / static_cast <float> (samples_) };
+            buffer_.buffer_data_[x][y] = buffer_.buffer_data_[x][y] / static_cast <float> (samples_);
+            //final_color = { 0.0f, 0.0f, 0.0f };
         }
     }
 

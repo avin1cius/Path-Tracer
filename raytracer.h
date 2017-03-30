@@ -17,9 +17,12 @@ public:
                const Scene &scene,
                const glm::vec3 background_color,
                const size_t samples,
+               const size_t maximum_depth,
                Buffer &buffer );
 
     void integrate( void );
+
+    glm::vec3 L( Ray, size_t );
 
 private:
 
@@ -30,6 +33,7 @@ private:
     glm::dvec3 background_color_;
 
     const size_t samples_;
+    const size_t maximum_depth_;
 
     Buffer &buffer_;
 

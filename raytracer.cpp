@@ -17,7 +17,7 @@ RayTracer::RayTracer( Camera &camera,
 glm::vec3 RayTracer::L( Ray ray, size_t curr_depth ) //Rendering equation
 {
     glm::vec3 Lo{ 0.0f, 0.0f, 0.0f };
-    glm::vec3 refl_ray{ 0.0f, 0.0f, 0.0f };
+    Ray refl_ray;
 
     if ( curr_depth < maximum_depth_ )
     {
@@ -26,7 +26,7 @@ glm::vec3 RayTracer::L( Ray ray, size_t curr_depth ) //Rendering equation
             refl_ray = intersection_point.get_new_ray;
 
             Lo = intersection_point.Le + 2.0 * M_PI * intersection_point.fr() *
-            L( &refl_ray, curr_depth++ ) * glm::dot( intersection_point.normal, refl_ray );
+            L( refl_ray, curr_depth++ ) * glm::dot( intersection_point.normal, refl_ray );
 
         }
     }

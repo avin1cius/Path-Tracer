@@ -16,6 +16,7 @@ RayTracer::RayTracer( Camera &camera,
 
 glm::vec3 RayTracer::L( Ray ray, size_t curr_depth ) //Rendering equation
 {
+    IntersectionRecord intersection_record;
     glm::vec3 Lo{ 0.0f, 0.0f, 0.0f };
     Ray refl_ray;
 
@@ -23,7 +24,8 @@ glm::vec3 RayTracer::L( Ray ray, size_t curr_depth ) //Rendering equation
     {
         if ( scene_.intersect ( ray, intersection_record ))
         {
-            refl_ray = intersection_point.get_new_ray;
+
+            refl_ray = intersection_point.get_new_ray( intersection_record );
 
             Lo = intersection_point.Le + 2.0 * M_PI * intersection_point.fr() *
             L( refl_ray, curr_depth++ ) * glm::dot( intersection_point.normal, refl_ray );
@@ -35,7 +37,7 @@ glm::vec3 RayTracer::L( Ray ray, size_t curr_depth ) //Rendering equation
 
 void RayTracer::integrate( void )
 {
-    IntersectionRecord intersection_record;
+    //IntersectionRecord intersection_record;
 
     //glm::vec3 final_color{ 0.0f, 0.0f, 0.0f };
 
@@ -68,7 +70,7 @@ void RayTracer::integrate( void )
                 //Ray ray{ camera_.getWorldSpaceRay( glm::vec2{ x + 0.5f, y + 0.5f } ) };
                 Ray ray{ camera_.getWorldSpaceRay( glm::vec2{ x + rand1, y + rand2 } ) };
 
-                if ( scene_.intersect( ray, intersection_record ) )
+                //if ( scene_.intersect( ray, intersection_record ) )
                     //buffer_.buffer_data_[x][y] = glm::vec3{ intersection_record.t_ * 0.2f };
                     //final_color = final_color + intersection_record.color_;
                     buffer_.buffer_data_[x][y] = buffer_.buffer_data_[x][y] + L( ray, 0 );            

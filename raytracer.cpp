@@ -20,6 +20,8 @@ glm::vec3 RayTracer::L( Ray ray, size_t curr_depth ) //Rendering equation
     glm::vec3 Lo{ 0.0f, 0.0f, 0.0f };
     Ray refl_ray;
 
+    intersection_record.t_ = std::numeric_limits< double >::max();
+
     if ( curr_depth < maximum_depth_ )
     {
         if ( scene_.intersect ( ray, intersection_record ))
@@ -62,7 +64,7 @@ void RayTracer::integrate( void )
         {
             for(std::size_t i = 0; i < samples_; i++ )
             {   
-                intersection_record.t_ = std::numeric_limits< double >::max();
+                //intersection_record.t_ = std::numeric_limits< double >::max();
 
                 float rand1 = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
                 float rand2 = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
@@ -73,11 +75,11 @@ void RayTracer::integrate( void )
                 //if ( scene_.intersect( ray, intersection_record ) )
                     //buffer_.buffer_data_[x][y] = glm::vec3{ intersection_record.t_ * 0.2f };
                     //final_color = final_color + intersection_record.color_;
-                    buffer_.buffer_data_[x][y] = buffer_.buffer_data_[x][y] + L( ray, 0 );            
+                    buffer_.buffer_data_[x][y] += L( ray, 0 );            
             }
 
             //buffer_.buffer_data_[x][y] = glm::vec3{ final_color / static_cast <float> (samples_) };
-            buffer_.buffer_data_[x][y] = buffer_.buffer_data_[x][y] / static_cast <float> (samples_);
+            buffer_.buffer_data_[x][y] /= static_cast <float> (samples_);
             //final_color = { 0.0f, 0.0f, 0.0f };
         }
     }

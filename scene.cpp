@@ -27,8 +27,8 @@ bool Scene::intersect( const Ray &ray,
 
 void Scene::load( void ) 
 {
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  0.5f, 0.5f,-1.0f }, 0.2f, glm::vec3{  0.0f, 0.0f,   0.0f } } ) );
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{ -0.5f, 0.5f,-1.0f }, 0.2f, glm::vec3{  0.0f, 0.0f,   0.0f } } ) );
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  0.0f, 0.0f, 5.0f }, 0.5f, glm::vec3{  0.0f, 0.0f,   0.0f }, 1 } ) );
+/*    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{ -0.5f, 0.5f,-1.0f }, 0.2f, glm::vec3{  0.0f, 0.0f,   0.0f } } ) );
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  0.5f,-0.5f,-1.0f }, 0.2f, glm::vec3{  0.0f, 0.0f,   0.0f } } ) );
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{ -0.5f,-0.5f,-1.0f }, 0.2f, glm::vec3{  0.0f, 0.0f,   0.0f } } ) );
     
@@ -51,6 +51,47 @@ void Scene::load( void )
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{ -0.5f, 0.5f,-5.0f }, 0.2f, glm::vec3{  0.0f, 0.0f,   0.0f } } ) );
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  0.5f,-0.5f,-5.0f }, 0.2f, glm::vec3{  0.0f, 0.0f,   0.0f } } ) );
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{ -0.5f,-0.5f,-5.0f }, 0.2f, glm::vec3{  0.0f, 0.0f,   0.0f } } ) );
+
+*/
+    //fundo
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{ glm::vec3{-3.0f ,3.0f , -4.0f}, glm::vec3{3.0f,3.0f,-4.0f}, glm::vec3{3.0f, -3.0f,-4.0f},
+                                                                            glm::vec3{0.9f, 0.89f , 0.24f},
+                                                                            0}));
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{ glm::vec3{-3.0f ,3.0f , -4.0f}, glm::vec3{-3.0f,-3.0f,-4.0f}, glm::vec3{3.0f, -3.0f,-4.0f},
+                                                                            glm::vec3{0.9f, 0.89f , 0.24f},
+                                                                            0}));    
+    //parede direita                                                                        
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{ glm::vec3{3.0f ,3.0f , 5.0f}, glm::vec3{3.0f,3.0f,-4.0f}, glm::vec3{3.0f, -3.0f,-4.0f},
+                                                                            glm::vec3{0.0f, 1.0f , 0.0f},
+                                                                            0}));
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{ glm::vec3{3.0f ,3.0f , 5.0f}, glm::vec3{3.0f,-3.0f,5.0f}, glm::vec3{3.0f, -3.0f,-4.0f},
+                                                                            glm::vec3{0.0f, 1.0f , 0.0f},
+                                                                            0}));  
+
+    //parede esquerda
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{ glm::vec3{-3.0f ,3.0f , 5.0f}, glm::vec3{-3.0f,3.0f,-4.0f}, glm::vec3{-3.0f, -3.0f,-4.0f},
+                                                                            glm::vec3{1.0f, 0.0f , 0.0f},
+                                                                            0}));
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{ glm::vec3{-3.0f ,3.0f , 5.0f}, glm::vec3{-3.0f,-3.0f,5.0f}, glm::vec3{-3.0f, -3.0f,-4.0f},
+                                                                            glm::vec3{1.0f, 0.0f , 0.0f},
+                                                                            0}));       
+    //teto
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{ glm::vec3{-3.0f ,3.0f , -4.0f}, glm::vec3{-3.0f,3.0f,4.0f}, glm::vec3{3.0f, 3.0f,4.0f},
+                                                                            glm::vec3{0.9f, 0.89f , 0.24f},
+                                                                            0}));
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{ glm::vec3{-3.0f ,3.0f , -4.0f}, glm::vec3{3.0f,3.0f,4.0f}, glm::vec3{3.0f, 3.0f,-4.0f},
+                                                                            glm::vec3{0.9f, 0.89f , 0.24f},
+                                                                            0}));                                                                       
+    //chao
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{ glm::vec3{-3.0f ,-3.0f , -4.0f}, glm::vec3{3.0f,-3.0f,-4.0f}, glm::vec3{-3.0f, -3.0f,4.0f},
+                                                                            glm::vec3{0.2f, 0.2f , 0.2f},
+                                                                            0}));
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{ glm::vec3{3.0f ,-3.0f , -4.0f}, glm::vec3{3.0f,-3.0f,4.0f}, glm::vec3{-3.0f, -3.0f,4.0f},
+                                                                            glm::vec3{0.2f, 0.2f , 0.2f},
+                                                                            0})); 
+
+
+
 }
 
 void Scene::loadObject(const char * obj)
@@ -69,6 +110,8 @@ void Scene::loadObject(const char * obj)
         float g = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
         float b = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
 
+       
+
         primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{ glm::vec3{(float)scene->mMeshes[i]->mVertices[scene->mMeshes[i]->mFaces[j].mIndices[0]].x, 
                                                                                       (float)scene->mMeshes[i]->mVertices[scene->mMeshes[i]->mFaces[j].mIndices[0]].y, 
                                                                                       (float)scene->mMeshes[i]->mVertices[scene->mMeshes[i]->mFaces[j].mIndices[0]].z},
@@ -81,7 +124,8 @@ void Scene::loadObject(const char * obj)
                                                                                       (float)scene->mMeshes[i]->mVertices[scene->mMeshes[i]->mFaces[j].mIndices[2]].y,
                                                                                       (float)scene->mMeshes[i]->mVertices[scene->mMeshes[i]->mFaces[j].mIndices[2]].z},
                                                                                                                                                                                  
-                                                                            glm::vec3{r, g, b}})); //random color  
+                                                                            glm::vec3{r, g, b},//random color 
+                                                                            0})); //material type 
     }
 }
 

@@ -3,10 +3,11 @@
 Sphere::Sphere( void )
 {}
 
-Sphere::Sphere( const glm::vec3 &center, float radius, const glm::vec3 &color ) :
+Sphere::Sphere( const glm::vec3 &center, float radius, const glm::vec3 &color, int material ) :
         center_{ center },
         radius_{ radius },
-        color_{ color }
+        color_{ color },
+        material_{material}
         
 {}
 
@@ -43,6 +44,7 @@ bool Sphere::intersect( const Ray &ray,
     intersection_record.position_ = ray.origin_ + intersection_record.t_ * ray.direction_;
     intersection_record.normal_ = glm::normalize( intersection_record.position_ - center_ );
     intersection_record.color_ = color_;
+    intersection_record.material = material_;
 
     return true;
 }

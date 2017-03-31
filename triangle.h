@@ -12,7 +12,7 @@ public:
 
     Triangle( void );
 
-    Triangle( const glm::vec3 &p1,const glm::vec3 &p2, const glm::vec3 &p3, const glm::vec3 color);
+    Triangle( const glm::vec3 &p1,const glm::vec3 &p2, const glm::vec3 &p3, const glm::vec3 color, int material);
 
     bool intersect( const Ray &ray,
                     IntersectionRecord &intersection_record ) const;
@@ -21,7 +21,9 @@ public:
     glm::vec3 p2_ = { 0.0f, 0.0f, 0.0f };
     glm::vec3 p3_ = { 0.0f, 0.0f, 0.0f };
 
-    glm::vec3 color_ = { 0.0f, 0.0f, 0.0f}; 
+    glm::vec3 color_ = { 0.0f, 0.0f, 0.0f};
+
+    int material_;
 
 
 private:

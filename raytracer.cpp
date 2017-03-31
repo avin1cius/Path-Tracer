@@ -19,6 +19,8 @@ glm::vec3 RayTracer::L( Ray ray, size_t curr_depth ) //Rendering equation
     IntersectionRecord intersection_record;
     glm::vec3 Lo{ 0.0f, 0.0f, 0.0f };
     Ray refl_ray;
+    
+
 
     intersection_record.t_ = std::numeric_limits< double >::max();
 
@@ -27,10 +29,36 @@ glm::vec3 RayTracer::L( Ray ray, size_t curr_depth ) //Rendering equation
         if ( scene_.intersect ( ray, intersection_record ))
         {
 
+
+            if(intersection_record.material == 0){
+            
+            IntersectionPoint intersection_point{{0.0f, 0.0f, 0.0f}, intersection_record.color_, intersection_record.normal_};
+
+           // intersection_point.fr = intersection_record.color_;
+           // intersection_point.Le = {0.0f, 0.0f, 0.0f};
+           // intersection_point.normal_ = intersection_record.normal_;
+
             refl_ray = intersection_point.get_new_ray( intersection_record );
 
-            Lo = intersection_point.Le + 2.0 * M_PI * intersection_point.fr() *
-            L( refl_ray, curr_depth++ ) * glm::dot( intersection_point.normal, refl_ray );
+            Lo = intersection_point.Le + 2.0f * ((float)M_PI) * intersection_point.fr *
+            L( refl_ray, ++curr_depth ) * glm::dot( intersection_point.normal_, refl_ray.direction_ - refl_ray.origin_);
+            
+            }
+
+            if(intersection_record.material == 1){
+
+            IntersectionPoint intersection_point{{20.0f, 20.0f, 20.0f}, {1.0f, 1.0f, 1.0f}, intersection_record.normal_};
+
+            //intersection_point.fr = {0.0f, 0.0f, 0.0f};
+            //intersection_point.Le = {20.0f, 20.0f, 20.f};
+            //intersection_point.normal_ = intersection_record.normal_;
+
+            refl_ray = intersection_point.get_new_ray( intersection_record );
+
+            Lo = intersection_point.Le + 2.0f * ((float) M_PI) * intersection_point.fr *
+            L( refl_ray, ++curr_depth ) * glm::dot( intersection_point.normal_, (refl_ray.direction_ - refl_ray.origin_) );
+            
+            }
 
         }
     }

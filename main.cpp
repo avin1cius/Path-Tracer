@@ -24,12 +24,12 @@ int main( void )
                                 glm::vec3{ 0.0f, 1.0f, 0.0f },     // up
                                 glm::vec3{ 0.0f, 0.0f, -1.0f } };   // look at
     Scene scene{};
-    char obj[20] = "object1.obj";
+    char obj[20] = "monkey.obj";
 
-    //scene.load();
+    scene.load();
     scene.loadObject(obj);
     glm::vec3 background_color{ 0.0f, 0.0f, 0.0f };
-    size_t samples = 1; //samples per pixel
+    size_t samples = 30; //samples per pixel
     size_t maximum_depth = 5;
     Buffer rendering_buffer{ x_resolution, y_resolution };
     

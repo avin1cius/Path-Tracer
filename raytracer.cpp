@@ -14,52 +14,43 @@ RayTracer::RayTracer( Camera &camera,
         buffer_( buffer )
 {}
 
+Ray RayTracer::get_new_ray( IntersectionRecord intersection_record ){
+
+    float r1 = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+    float r2 = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+    float theta = glm::acos( 1 - r1 );
+    float phi = 2 * M_PI * r2;
+    ONB onb_;
+
+    onb_.setFromV(intersection_record.normal_);
+
+    glm::vec3 cartesian_coordinate{ cosf(phi)*sinf(theta), cosf(theta), sinf(phi)*sinf(theta) };
+
+
+    return Ray{ intersection_record.position_ + (intersection_record.normal_*0.001f), onb_.getBasisMatrix() * cartesian_coordinate };
+}
+
 glm::vec3 RayTracer::L( Ray ray, size_t curr_depth ) //Rendering equation
 {
     IntersectionRecord intersection_record;
+    IntersectionPoint intersection_point;
     glm::vec3 Lo{ 0.0f, 0.0f, 0.0f };
     Ray refl_ray;
     
-
-
     intersection_record.t_ = std::numeric_limits< double >::max();
 
     if ( curr_depth < maximum_depth_ )
     {
         if ( scene_.intersect ( ray, intersection_record ))
         {
+            intersection_point.fr_ = intersection_record.brdf_;
+            intersection_point.Le_ = intersection_record.emittance_;
+            intersection_point.normal_ = intersection_record.normal_; 
 
+            refl_ray = get_new_ray( intersection_record );
 
-            if(intersection_record.material == 0){
-            
-            IntersectionPoint intersection_point{{0.0f, 0.0f, 0.0f}, intersection_record.color_, intersection_record.normal_};
-
-           // intersection_point.fr = intersection_record.color_;
-           // intersection_point.Le = {0.0f, 0.0f, 0.0f};
-           // intersection_point.normal_ = intersection_record.normal_;
-
-            refl_ray = intersection_point.get_new_ray( intersection_record );
-
-            Lo = intersection_point.Le + 2.0f * ((float)M_PI) * intersection_point.fr *
-            L( refl_ray, ++curr_depth ) * glm::dot( intersection_point.normal_, refl_ray.direction_ - refl_ray.origin_);
-            
-            }
-
-            if(intersection_record.material == 1){
-
-            IntersectionPoint intersection_point{{20.0f, 20.0f, 20.0f}, {1.0f, 1.0f, 1.0f}, intersection_record.normal_};
-
-            //intersection_point.fr = {0.0f, 0.0f, 0.0f};
-            //intersection_point.Le = {20.0f, 20.0f, 20.f};
-            //intersection_point.normal_ = intersection_record.normal_;
-
-            refl_ray = intersection_point.get_new_ray( intersection_record );
-
-            Lo = intersection_point.Le + 2.0f * ((float) M_PI) * intersection_point.fr *
-            L( refl_ray, ++curr_depth ) * glm::dot( intersection_point.normal_, (refl_ray.direction_ - refl_ray.origin_) );
-            
-            }
-
+            Lo = intersection_point.Le_ + 2.0f * ((float) M_PI) * intersection_point.fr_ *
+            L( refl_ray, ++curr_depth ) * glm::dot( intersection_point.normal_, refl_ray.direction_ );                      
         }
     }
     return Lo;
@@ -101,9 +92,9 @@ void RayTracer::integrate( void )
                 Ray ray{ camera_.getWorldSpaceRay( glm::vec2{ x + rand1, y + rand2 } ) };
 
                 //if ( scene_.intersect( ray, intersection_record ) )
-                    //buffer_.buffer_data_[x][y] = glm::vec3{ intersection_record.t_ * 0.2f };
-                    //final_color = final_color + intersection_record.color_;
-                    buffer_.buffer_data_[x][y] += L( ray, 0 );            
+                //buffer_.buffer_data_[x][y] = glm::vec3{ intersection_record.t_ * 0.2f };
+                //final_color = final_color + intersection_record.color_;
+                buffer_.buffer_data_[x][y] += L( ray, 0 );            
             }
 
             //buffer_.buffer_data_[x][y] = glm::vec3{ final_color / static_cast <float> (samples_) };

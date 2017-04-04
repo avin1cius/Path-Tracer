@@ -23,6 +23,8 @@ public:
 
     void integrate( void );
 
+    Ray get_new_ray( IntersectionRecord );
+
     glm::vec3 L( Ray, size_t );
 
 private:

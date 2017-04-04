@@ -3,12 +3,12 @@
 Triangle::Triangle( void )
 {}
 
-Triangle::Triangle( const glm::vec3 &p1,const glm::vec3 &p2, const glm::vec3 &p3, const glm::vec3 color, int material) :
+Triangle::Triangle( const glm::vec3 &p1,const glm::vec3 &p2, const glm::vec3 &p3, const glm::vec3 &brdf, const glm::vec3 &emittance ) :
 	p1_{ p1 },
 	p2_{ p2 },
 	p3_{ p3 },
-	color_{ color },
-	material_{ material }
+	brdf_{ brdf },
+	emittance_{ emittance }
 {}
 
 bool Triangle::intersect( const Ray &ray,
@@ -54,13 +54,17 @@ bool Triangle::intersect( const Ray &ray,
 	if(beta < 0.0f || beta > (1.0f - gama))
 		return false;
 
-	glm::vec3 center_ = glm::vec3((p1_.x+p2_.x+p3_.x)/3.0f , (p1_.y+p2_.y+p3_.y)/3.0f , (p1_.z+p2_.z+p3_.z)/3.0f);
+	//glm::vec3 center_ = glm::vec3((p1_.x+p2_.x+p3_.x)/3.0f , (p1_.y+p2_.y+p3_.y)/3.0f , (p1_.z+p2_.z+p3_.z)/3.0f);
 
 	intersection_record.t_ =  t;
 	intersection_record.position_ = ray.origin_ +intersection_record.t_ * ray.direction_;
-	intersection_record.normal_ = glm::normalize( intersection_record.position_ - center_);
-	intersection_record.color_ = color_;
-	intersection_record.material = material_;
+	
+	intersection_record.normal_ = glm::normalize( glm::cross(p2_ - p1_, p3_ - p1_));
+	if (glm::dot(intersection_record.normal_, ray.direction_) > 0)
+        intersection_record.normal_ = -intersection_record.normal_;
+
+	intersection_record.brdf_ = brdf_;
+	intersection_record.emittance_ = emittance_;
 
 	return true;
 }

@@ -63,7 +63,7 @@ bool Triangle::intersect( const Ray &ray,
 	if (glm::dot(intersection_record.normal_, ray.direction_) > 0)
         intersection_record.normal_ = -intersection_record.normal_;
 
-	intersection_record.brdf_ = brdf_;
+	intersection_record.brdf_ = brdf_ / ((float) M_PI);
 	intersection_record.emittance_ = emittance_;
 
 	return true;

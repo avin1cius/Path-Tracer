@@ -33,7 +33,6 @@ Ray RayTracer::get_new_ray( IntersectionRecord intersection_record ){
 glm::vec3 RayTracer::L( Ray ray, size_t curr_depth ) //Rendering equation
 {
     IntersectionRecord intersection_record;
-    IntersectionPoint intersection_point;
     glm::vec3 Lo{ 0.0f, 0.0f, 0.0f };
     Ray refl_ray;
     
@@ -43,14 +42,10 @@ glm::vec3 RayTracer::L( Ray ray, size_t curr_depth ) //Rendering equation
     {
         if ( scene_.intersect ( ray, intersection_record ))
         {
-            intersection_point.fr_ = intersection_record.brdf_;
-            intersection_point.Le_ = intersection_record.emittance_;
-            intersection_point.normal_ = intersection_record.normal_; 
-
             refl_ray = get_new_ray( intersection_record );
 
-            Lo = intersection_point.Le_ + 2.0f * ((float) M_PI) * intersection_point.fr_ *
-            L( refl_ray, ++curr_depth ) * glm::dot( intersection_point.normal_, refl_ray.direction_ );                      
+            Lo = intersection_record.emittance_ + 2.0f * ((float) M_PI) * intersection_record.brdf_ *
+            L( refl_ray, ++curr_depth ) * glm::dot( intersection_record.normal_, refl_ray.direction_ );                      
         }
     }
     return Lo;

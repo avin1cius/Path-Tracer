@@ -8,7 +8,6 @@
 #include "camera.h"
 #include "scene.h"
 #include "buffer.h"
-#include "intersection_point.h"
 
 class RayTracer
 {

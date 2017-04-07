@@ -6,9 +6,16 @@
 #include <memory>
 #include <vector>
 #include <glm/glm.hpp>
+#include <ctime>
 
 #include "primitive.h"
-#include "sphere.h" 
+#include "sphere.h"
+#include "triangle.h" 
+
+#include <assimp/Importer.hpp>      // C++ importer interface
+#include <assimp/scene.h>           // Output data structure
+#include <assimp/postprocess.h>     // Post processing flags
+#include <assimp/vector3.h>
 
 class Scene
 {
@@ -23,9 +30,10 @@ public:
 
     void load( void );
 
+    void loadObject(const char * obj);
+
     std::vector< Primitive::PrimitiveUniquePtr > primitives_;
 
 };
 
 #endif /* SCENE_H_ */
-

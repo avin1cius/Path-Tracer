@@ -18,6 +18,8 @@ public:
 
     virtual bool intersect( const Ray &ray,
                             IntersectionRecord &intersection_record ) const = 0;
+
+    glm::vec3 color_ = { 0.0f, 0.0f, 0.0f };
 };
 
 #endif /* PRIMITIVE_H_ */

@@ -16,9 +16,15 @@ public:
     RayTracer( Camera &camera,
                const Scene &scene,
                const glm::vec3 background_color,
+               const size_t samples,
+               const size_t maximum_depth,
                Buffer &buffer );
 
     void integrate( void );
+
+    Ray get_new_ray( IntersectionRecord );
+
+    glm::vec3 L( Ray, size_t );
 
 private:
 
@@ -27,6 +33,9 @@ private:
     const Scene &scene_;
 
     glm::dvec3 background_color_;
+
+    const size_t samples_;
+    const size_t maximum_depth_;
 
     Buffer &buffer_;
 

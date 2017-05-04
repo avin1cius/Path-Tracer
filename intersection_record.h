@@ -10,6 +10,7 @@ struct IntersectionRecord
     glm::vec3 normal_;
     glm::vec3 brdf_;
     glm::vec3 emittance_;
+    bool pmirror_;
 };
 
 #endif /* INTERSECTION_RECORD_H_ */

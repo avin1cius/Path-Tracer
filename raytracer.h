@@ -24,6 +24,8 @@ public:
 
     Ray get_new_ray( IntersectionRecord );
 
+    Ray get_reflection( IntersectionRecord, Ray);
+
     glm::vec3 L( Ray, size_t );
 
 private:

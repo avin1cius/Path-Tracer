@@ -28,7 +28,7 @@ bool Scene::intersect( const Ray &ray,
 void Scene::load( void ) 
 {
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ 
-        glm::vec3{ 0.0f, 0.0f, 5.0f }, 0.5f, glm::vec3{ 0.0f, 0.0f, 0.0f }, glm::vec3{ 20.0f, 20.0f, 20.f }}));
+        glm::vec3{ 0.0f, 1.0f, 0.2f }, 0.2f, glm::vec3{ 0.0f, 0.0f, 0.0f }, glm::vec3{ 20.0f, 20.0f, 20.f }, true}));
 /*    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{ -0.5f, 0.5f,-1.0f }, 0.2f, glm::vec3{  0.0f, 0.0f,   0.0f } } ) );
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  0.5f,-0.5f,-1.0f }, 0.2f, glm::vec3{  0.0f, 0.0f,   0.0f } } ) );
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{ -0.5f,-0.5f,-1.0f }, 0.2f, glm::vec3{  0.0f, 0.0f,   0.0f } } ) );
@@ -122,7 +122,7 @@ void Scene::loadObject(const char * obj)
                             (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[2]].z},
                                                                                                                                                                                  
                 glm::vec3 { brdf.r, brdf.g, brdf.b },
-                glm::vec3 { emittance.r, emittance.g, emittance.b }})); 
+                glm::vec3 { emittance.r, emittance.g, emittance.b },false})); 
         }
     }
 }

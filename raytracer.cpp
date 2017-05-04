@@ -30,6 +30,26 @@ Ray RayTracer::get_new_ray( IntersectionRecord intersection_record ){
     return Ray{ intersection_record.position_ + (intersection_record.normal_*0.001f), onb_.getBasisMatrix() * cartesian_coordinate };
 }
 
+
+Ray RayTracer::get_reflection(IntersectionRecord intersection_record, Ray oldray){
+
+    ONB onb_;
+
+    onb_.setFromV(intersection_record.normal_);
+
+    Ray newray;
+
+    glm::vec3 newdir = glm::transpose(onb_.getBasisMatrix()) * oldray.direction_;
+    newdir = {newdir.x, -newdir.y, newdir.z};
+    newray = {intersection_record.position_ + (intersection_record.normal_*0.001f), onb_.getBasisMatrix() * newdir};
+
+    return newray;
+
+
+}
+
+
+
 glm::vec3 RayTracer::L( Ray ray, size_t curr_depth ) //Rendering equation
 {
     IntersectionRecord intersection_record;
@@ -42,10 +62,23 @@ glm::vec3 RayTracer::L( Ray ray, size_t curr_depth ) //Rendering equation
     {
         if ( scene_.intersect ( ray, intersection_record ))
         {
+            
+            if(!intersection_record.pmirror_){
             refl_ray = get_new_ray( intersection_record );
 
             Lo = intersection_record.emittance_ + 2.0f * ((float) M_PI) * intersection_record.brdf_ *
-            L( refl_ray, ++curr_depth ) * glm::dot( intersection_record.normal_, refl_ray.direction_ );                      
+            L( refl_ray, ++curr_depth ) * glm::dot( intersection_record.normal_, refl_ray.direction_ ); 
+
+            }
+            else{
+                refl_ray = get_reflection(intersection_record, ray);
+
+                Lo = L(refl_ray, ++curr_depth);
+            }
+
+
+
+                                 
         }
     }
     return Lo;

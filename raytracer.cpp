@@ -48,6 +48,21 @@ Ray RayTracer::get_reflection(IntersectionRecord intersection_record, Ray oldray
 
 }
 
+double RayTracer::rSchlick1(const glm::vec3 normal, glm::vec3 incident, double n1, double n2){
+
+    double r0 = (n1 - n2) /(n1 + n2);
+    r0 *= r0;
+    double cosX = -glm::dot(normal, incident);
+    if (n1 > n2) {
+        const double n = n1/n2;
+        const double sinT2 = n * n * (1.0 - cosX * cosX);
+        cosX = sqrt(1.0 - sinT2);
+    }
+    const double x = 1.0 - cosX;
+    return r0 + ( 1.0 - r0 ) * x * x * x * x * x;
+}
+
+
 double RayTracer::rSchlick2(const glm::vec3 normal, glm::vec3 incident, double n1, double n2){
 
     double r0 = (n1 - n2) /(n1 + n2);
@@ -56,7 +71,7 @@ double RayTracer::rSchlick2(const glm::vec3 normal, glm::vec3 incident, double n
     if (n1 > n2) {
         const double n = n1/n2;
         const double sinT2 = n * n * (1.0 - cosX * cosX);
-        if(sinT2 > 1.0) return 1.0;
+        if(sinT2 > 1.0) return 1.0;//TIR
         cosX = sqrt(1.0 - sinT2);
     }
     const double x = 1.0 - cosX;
@@ -64,10 +79,11 @@ double RayTracer::rSchlick2(const glm::vec3 normal, glm::vec3 incident, double n
 }
 
 
-glm::vec3 RayTracer::L( Ray ray, size_t curr_depth ) //Rendering equation
+glm::vec3 RayTracer::L( Ray ray, IntersectionRecord intersection_record, size_t curr_depth ) //Rendering equation
 {
-    IntersectionRecord intersection_record;
+    //IntersectionRecord intersection_record;
     glm::vec3 Lo{ 0.0f, 0.0f, 0.0f };
+    
     Ray refl_ray;
     
     intersection_record.t_ = std::numeric_limits< double >::max();
@@ -81,7 +97,7 @@ glm::vec3 RayTracer::L( Ray ray, size_t curr_depth ) //Rendering equation
 
                 refl_ray = get_reflection(intersection_record, ray);
 
-                Lo = L(refl_ray, ++curr_depth);
+                Lo = L(refl_ray, intersection_record, ++curr_depth);
             
             }
             else{
@@ -90,36 +106,102 @@ glm::vec3 RayTracer::L( Ray ray, size_t curr_depth ) //Rendering equation
 
                     float n1, n2;
                     
-                    if(glm::dot(ray.direction_,intersection_record.normal_)>0){
+                    if(glm::dot(ray.direction_,intersection_record.normal_)<0){//ENTRANDO NO VIDRO
+
                         n1 = 1.0f;
-                        n2 = 1.3f;
-                    }else{
-                        n1 = 1.3f;
-                        n2 = 1.0f;
-                    }
+                        n2 = 2.0f;
 
-                    double fresnel = rSchlick2(intersection_record.normal_, -(ray.direction_), n1, n2);
-
-                    double r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+                        double fresnel = rSchlick1(intersection_record.normal_, (ray.direction_), n1, n2);
+                        double r = (double) (rand()) / (double) (RAND_MAX);
+                    
 
                     if(r<fresnel){
                         refl_ray = get_reflection(intersection_record, ray);
-                        Lo = L(refl_ray, ++curr_depth);
+                        Lo = L(refl_ray, intersection_record, ++curr_depth);
+                    } 
+                    
+                    else{
+
+                        const float n = n1/n2;
+
+                        const float cosI = -glm::dot(intersection_record.normal_, ray.direction_);
+
+                        const double sinT2 = n * n * (1.0 - cosI * cosI);
+
+                        const float cosT = glm::sqrt(1.0 - sinT2);
+
+                        refl_ray.direction_ =glm::normalize( n * ray.direction_ + (n*cosI - cosT) * intersection_record.normal_);
+                        refl_ray.origin_ = intersection_record.position_ + (0.001f*refl_ray.direction_);
+                        
+                        Lo = L(refl_ray, intersection_record, ++curr_depth);
+                    }
+
+                        
+                    }else{//SAINDO DO VIDRO
+                        n1 = 2.0f;
+                        n2 = 1.0f;
+
+                        const float n = n1/n2;
+                        double cosX = -glm::dot(intersection_record.normal_, ray.direction_);
+                        const double sinT2 = n * n * (1.0 - cosX * cosX);
+                        if(sinT2 > 1.0){
+
+                            refl_ray = get_reflection(intersection_record, ray);
+                            Lo = L(refl_ray, intersection_record, ++curr_depth);
+
+                        }else{
+
+
+                        double fresnel = rSchlick2(intersection_record.normal_, (ray.direction_), n1, n2);
+                        double r = (double) (rand()) / (double) (RAND_MAX+1.0);
+                        
+                        
+
+                    if(r<fresnel){
+                        refl_ray = get_reflection(intersection_record, ray);
+                        Lo = L(refl_ray, intersection_record, ++curr_depth);
                     }else{
+
                         const float n = n1/n2;
 
                         const float cosI = glm::dot(intersection_record.normal_, ray.direction_);
 
                         const double sinT2 = n * n * (1.0 - cosI * cosI);
 
-                        if (sinT2 > 1.0)
-                            return glm::vec3{0.0f,0.0f,0.0f};// TIR
+                        const float cosT = glm::sqrt(1.0 - sinT2);
+                        
+                        refl_ray.direction_ = glm::normalize(n * ray.direction_ + (n * cosI - cosT) * intersection_record.normal_);
+                        refl_ray.origin_ = intersection_record.position_ + (0.001f*refl_ray.direction_);
+                        Lo = L(refl_ray, intersection_record, ++curr_depth);
+                            }
+                        }  
+                    }
+                    
+           /*         double fresnel = rSchlick2(intersection_record.normal_, (ray.direction_), n1, n2);
+
+                    double r = (double) (rand()) / (double) (RAND_MAX + 1.0f);
+                    
+
+                    if(r<fresnel){
+                        refl_ray = get_reflection(intersection_record, ray);
+                        Lo = L(refl_ray, intersection_record, ++curr_depth);
+                    }else{
+
+
+                        const float n = n1/n2;
+
+                        const float cosI = glm::dot(intersection_record.normal_, ray.direction_);
+
+                        const double sinT2 = n * n * (1.0 - cosI * cosI);
+
+                      //  if (sinT2 > 1.0)
+                        //    return glm::vec3{0.0f,0.0f,0.0f};// TIR
 
                         const float cosT = glm::sqrt(1.0 - sinT2);
                         refl_ray.direction_ = n * ray.direction_ + (n * cosI - cosT) * intersection_record.normal_;
                         refl_ray.origin_ = intersection_record.position_ + (0.001f*refl_ray.direction_);
-                        Lo = L(refl_ray, ++curr_depth);
-                    }
+                        Lo = L(refl_ray, intersection_record, ++curr_depth);
+                    }*/
 
 
                 }else{//If its diffuse
@@ -127,7 +209,7 @@ glm::vec3 RayTracer::L( Ray ray, size_t curr_depth ) //Rendering equation
             refl_ray = get_new_ray( intersection_record );
 
             Lo = intersection_record.emittance_ + 2.0f * ((float) M_PI) * intersection_record.brdf_ *
-            L( refl_ray, ++curr_depth ) * glm::dot( intersection_record.normal_, refl_ray.direction_ ); 
+            L( refl_ray, intersection_record, ++curr_depth ) * glm::dot( intersection_record.normal_, refl_ray.direction_ ); 
 
                 }
             }
@@ -144,6 +226,11 @@ void RayTracer::integrate( void )
     //glm::vec3 final_color{ 0.0f, 0.0f, 0.0f };
 
     // Image space origin (i.e. x = 0 and y = 0) at the top left corner.
+
+    Ray ray;
+        IntersectionRecord intersection_record;
+
+        #pragma omp parallel for schedule(dynamic, 1) private(ray, intersection_record)
 
     // Loops over image rows
     for ( std::size_t y = 0; y < buffer_.v_resolution_; y++ )
@@ -170,12 +257,12 @@ void RayTracer::integrate( void )
                 float rand2 = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
 
                 //Ray ray{ camera_.getWorldSpaceRay( glm::vec2{ x + 0.5f, y + 0.5f } ) };
-                Ray ray{ camera_.getWorldSpaceRay( glm::vec2{ x + rand1, y + rand2 } ) };
+                ray = { camera_.getWorldSpaceRay( glm::vec2{ x + rand1, y + rand2 } ) };
 
                 //if ( scene_.intersect( ray, intersection_record ) )
                 //buffer_.buffer_data_[x][y] = glm::vec3{ intersection_record.t_ * 0.2f };
                 //final_color = final_color + intersection_record.color_;
-                buffer_.buffer_data_[x][y] += L( ray, 0 );            
+                buffer_.buffer_data_[x][y] += L( ray, intersection_record, 0 );            
             }
 
             //buffer_.buffer_data_[x][y] = glm::vec3{ final_color / static_cast <float> (samples_) };

@@ -26,7 +26,9 @@ public:
 
     Ray get_reflection( IntersectionRecord, Ray);
 
-    glm::vec3 L( Ray, size_t );
+    glm::vec3 L( Ray, IntersectionRecord, size_t );
+
+    double rSchlick1(const glm::vec3 normal, glm::vec3 incident, double n1, double n2);
 
     double rSchlick2(const glm::vec3 normal, glm::vec3 incident, double n1, double n2);
 

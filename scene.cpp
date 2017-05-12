@@ -28,41 +28,27 @@ bool Scene::intersect( const Ray &ray,
 void Scene::load( void ) 
 {
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ 
-        glm::vec3{ 0.0f, 1.0f, 0.2f }, 0.2f, glm::vec3{ 0.0f, 0.0f, 0.0f }, glm::vec3{ 20.0f, 20.0f, 20.f }, false, true}));
-/*    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{ -0.5f, 0.5f,-1.0f }, 0.2f, glm::vec3{  0.0f, 0.0f,   0.0f } } ) );
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  0.5f,-0.5f,-1.0f }, 0.2f, glm::vec3{  0.0f, 0.0f,   0.0f } } ) );
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{ -0.5f,-0.5f,-1.0f }, 0.2f, glm::vec3{  0.0f, 0.0f,   0.0f } } ) );
-    
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  0.5f, 0.5f,-2.0f }, 0.2f, glm::vec3{  0.0f, 0.0f,   0.0f } } ) );
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{ -0.5f, 0.5f,-2.0f }, 0.2f, glm::vec3{  0.0f, 0.0f,   0.0f } } ) );
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  0.5f,-0.5f,-2.0f }, 0.2f, glm::vec3{  0.0f, 0.0f,   0.0f } } ) );
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{ -0.5f,-0.5f,-2.0f }, 0.2f, glm::vec3{  0.0f, 0.0f,   0.0f } } ) );
-    
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  0.5f, 0.5f,-3.0f }, 0.2f, glm::vec3{  0.0f, 0.0f,   0.0f } } ) );
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{ -0.5f, 0.5f,-3.0f }, 0.2f, glm::vec3{  0.0f, 0.0f,   0.0f } } ) );
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  0.5f,-0.5f,-3.0f }, 0.2f, glm::vec3{  0.0f, 0.0f,   0.0f } } ) );
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{ -0.5f,-0.5f,-3.0f }, 0.2f, glm::vec3{  0.0f, 0.0f,   0.0f } } ) );
-    
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  0.5f, 0.5f,-4.0f }, 0.2f, glm::vec3{  0.0f, 0.0f,   0.0f } } ) );
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{ -0.5f, 0.5f,-4.0f }, 0.2f, glm::vec3{  0.0f, 0.0f,   0.0f } } ) );
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  0.5f,-0.5f,-4.0f }, 0.2f, glm::vec3{  0.0f, 0.0f,   0.0f } } ) );
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{ -0.5f,-0.5f,-4.0f }, 0.2f, glm::vec3{  0.0f, 0.0f,   0.0f } } ) );
-    
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  0.5f, 0.5f,-5.0f }, 0.2f, glm::vec3{  0.0f, 0.0f,   0.0f } } ) );
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{ -0.5f, 0.5f,-5.0f }, 0.2f, glm::vec3{  0.0f, 0.0f,   0.0f } } ) );
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  0.5f,-0.5f,-5.0f }, 0.2f, glm::vec3{  0.0f, 0.0f,   0.0f } } ) );
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{ -0.5f,-0.5f,-5.0f }, 0.2f, glm::vec3{  0.0f, 0.0f,   0.0f } } ) );
+        glm::vec3{ 0.0f, 0.0f, 0.0f }, 1.0f, glm::vec3{ 0.0f, 0.0f, 0.0f }, glm::vec3{ 0.0f, 0.0f, 0.0f }, false, true}));
 
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ 
+        glm::vec3{ 4.0f, 4.0f, 2.0f }, 2.0f, glm::vec3{ 0.0f, 0.0f, 0.0f }, glm::vec3{ 5.0f, 5.0f, 5.0f }, false, false}));
+    
 
-    //fundo
+    //left
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{ 
-        glm::vec3{-3.0f, 3.0f,-4.0f}, glm::vec3{ 3.0f, 3.0f,-4.0f}, glm::vec3{ 3.0f,-3.0f,-4.0f}, glm::vec3{ 0.9f,0.89f,0.24f}, glm::vec3{ 0.0f, 0.0f, 0.0f }}));
+        glm::vec3{-1.2f,-1.0f,-1.5f}, glm::vec3{ -1.2f, -1.0f, 20.0f}, glm::vec3{ -1.2f,20.0f,-1.5f}, glm::vec3{ 0.75f,0.25f,0.25f}, glm::vec3{ 0.0f, 0.0f, 0.0f }, false, false}));
+    //ground
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{
-        glm::vec3{-3.0f, 3.0f,-4.0f}, glm::vec3{-3.0f,-3.0f,-4.0f}, glm::vec3{ 3.0f,-3.0f,-4.0f}, glm::vec3{ 0.9f,0.89f,0.24f}, glm::vec3{ 0.0f, 0.0f, 0.0f }}));    
-    //parede direita                                                                        
+        glm::vec3{-1.2f,-1.0f,-1.5f}, glm::vec3{-1.2f, -1.0f, 20.0f}, glm::vec3{ 20.0f,-1.0f,-1.5f}, glm::vec3{ 1.0f,1.0f,1.0f}, glm::vec3{ 0.0f, 0.0f, 0.0f }, false, false}));    
+    //back                                                                        
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{
-        glm::vec3{ 3.0f, 3.0f, 5.0f}, glm::vec3{ 3.0f, 3.0f,-4.0f}, glm::vec3{ 3.0f,-3.0f,-4.0f}, glm::vec3{ 0.0f, 1.0f, 0.0f}, glm::vec3{ 0.0f, 0.0f, 0.0f }}));
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{
+        glm::vec3{-1.2f,-1.0f,-1.5f}, glm::vec3{ 20.0f, -1.0f,-1.5f}, glm::vec3{ -1.2f,20.0f,-1.5f}, glm::vec3{ 1.0f, 1.0f, 1.0f}, glm::vec3{ 0.0f, 0.0f, 0.0f },false, false}));
+ 
+ 
+ 
+ 
+ 
+ /*   primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{
         glm::vec3{ 3.0f, 3.0f, 5.0f}, glm::vec3{ 3.0f,-3.0f, 5.0f}, glm::vec3{ 3.0f,-3.0f,-4.0f}, glm::vec3{ 0.0f, 1.0f, 0.0f}, glm::vec3{ 0.0f, 0.0f, 0.0f }}));  
     //parede esquerda
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{

@@ -48,6 +48,20 @@ Ray RayTracer::get_reflection(IntersectionRecord intersection_record, Ray oldray
 
 }
 
+double RayTracer::rSchlick2(const glm::vec3 normal, glm::vec3 incident, double n1, double n2){
+
+    double r0 = (n1 - n2) /(n1 + n2);
+    r0 *= r0;
+    double cosX = -glm::dot(normal, incident);
+    if (n1 > n2) {
+        const double n = n1/n2;
+        const double sinT2 = n * n * (1.0 - cosX * cosX);
+        if(sinT2 > 1.0) return 1.0;
+        cosX = sqrt(1.0 - sinT2);
+    }
+    const double x = 1.0 - cosX;
+    return r0 + ( 1.0 - r0 ) * x * x * x * x * x;
+}
 
 
 glm::vec3 RayTracer::L( Ray ray, size_t curr_depth ) //Rendering equation
@@ -63,22 +77,61 @@ glm::vec3 RayTracer::L( Ray ray, size_t curr_depth ) //Rendering equation
         if ( scene_.intersect ( ray, intersection_record ))
         {
             
-            if(!intersection_record.pmirror_){
+            if(intersection_record.pmirror_){//If its a mirror
+
+                refl_ray = get_reflection(intersection_record, ray);
+
+                Lo = L(refl_ray, ++curr_depth);
+            
+            }
+            else{
+                
+                if(intersection_record.glass_){//If its glass
+
+                    float n1, n2;
+                    
+                    if(glm::dot(ray.direction_,intersection_record.normal_)>0){
+                        n1 = 1.0f;
+                        n2 = 1.3f;
+                    }else{
+                        n1 = 1.3f;
+                        n2 = 1.0f;
+                    }
+
+                    double fresnel = rSchlick2(intersection_record.normal_, -(ray.direction_), n1, n2);
+
+                    double r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+
+                    if(r<fresnel){
+                        refl_ray = get_reflection(intersection_record, ray);
+                        Lo = L(refl_ray, ++curr_depth);
+                    }else{
+                        const float n = n1/n2;
+
+                        const float cosI = glm::dot(intersection_record.normal_, ray.direction_);
+
+                        const double sinT2 = n * n * (1.0 - cosI * cosI);
+
+                        if (sinT2 > 1.0)
+                            return glm::vec3{0.0f,0.0f,0.0f};// TIR
+
+                        const float cosT = glm::sqrt(1.0 - sinT2);
+                        refl_ray.direction_ = n * ray.direction_ + (n * cosI - cosT) * intersection_record.normal_;
+                        refl_ray.origin_ = intersection_record.position_ + (0.001f*refl_ray.direction_);
+                        Lo = L(refl_ray, ++curr_depth);
+                    }
+
+
+                }else{//If its diffuse
+            
             refl_ray = get_new_ray( intersection_record );
 
             Lo = intersection_record.emittance_ + 2.0f * ((float) M_PI) * intersection_record.brdf_ *
             L( refl_ray, ++curr_depth ) * glm::dot( intersection_record.normal_, refl_ray.direction_ ); 
 
+                }
             }
-            else{
-                refl_ray = get_reflection(intersection_record, ray);
-
-                Lo = L(refl_ray, ++curr_depth);
-            }
-
-
-
-                                 
+                              
         }
     }
     return Lo;

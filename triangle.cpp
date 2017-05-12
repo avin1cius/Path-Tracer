@@ -3,13 +3,14 @@
 Triangle::Triangle( void )
 {}
 
-Triangle::Triangle( const glm::vec3 &p1,const glm::vec3 &p2, const glm::vec3 &p3, const glm::vec3 &brdf, const glm::vec3 &emittance, const bool &pmirror ) :
+Triangle::Triangle( const glm::vec3 &p1,const glm::vec3 &p2, const glm::vec3 &p3, const glm::vec3 &brdf, const glm::vec3 &emittance, const bool &pmirror, const bool &glass ) :
 	p1_{ p1 },
 	p2_{ p2 },
 	p3_{ p3 },
 	brdf_{ brdf },
 	emittance_{ emittance },
-	pmirror_{pmirror}
+	pmirror_{pmirror},
+	glass_{glass}
 {}
 
 bool Triangle::intersect( const Ray &ray,
@@ -67,6 +68,7 @@ bool Triangle::intersect( const Ray &ray,
 	intersection_record.brdf_ = brdf_ / ((float) M_PI);
 	intersection_record.emittance_ = emittance_;
 	intersection_record.pmirror_ = pmirror_;
+	intersection_record.glass_ = glass_;
 
 	return true;
 }

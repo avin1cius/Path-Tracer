@@ -11,6 +11,7 @@ struct IntersectionRecord
     glm::vec3 brdf_;
     glm::vec3 emittance_;
     bool pmirror_;
+    bool glass_;
 };
 
 #endif /* INTERSECTION_RECORD_H_ */

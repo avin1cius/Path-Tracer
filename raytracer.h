@@ -28,6 +28,8 @@ public:
 
     glm::vec3 L( Ray, size_t );
 
+    double rSchlick2(const glm::vec3 normal, glm::vec3 incident, double n1, double n2);
+
 private:
 
     const Camera &camera_;

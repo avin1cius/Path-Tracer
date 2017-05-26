@@ -4,8 +4,14 @@ Scene::Scene( void )
 {}
 
 Scene::~Scene( void )
-{}
-
+{
+    if ( bvh_ )
+    {
+        delete bvh_;
+        bvh_ = nullptr;
+    }
+}
+/*
 bool Scene::intersect( const Ray &ray,
                        IntersectionRecord &intersection_record ) const
 {
@@ -24,14 +30,59 @@ bool Scene::intersect( const Ray &ray,
 
     return intersection_result;
 }
+*/
+bool Scene::intersect( const Ray &ray,
+                       IntersectionRecord &intersection_record ) const
+{
+    bool intersection_result = false;
+    IntersectionRecord tmp_intersection_record;
+    std::size_t num_primitives = primitives_.size();
+
+    switch( acceleration_structure_ )
+    {
+        case AccelerationStructure::NONE:
+            for ( std::size_t primitive_id = 0; primitive_id < num_primitives; primitive_id++ )
+            {
+                if ( primitives_[primitive_id]->intersect( ray, tmp_intersection_record ) )
+                {
+                    if ( ( tmp_intersection_record.t_ < intersection_record.t_ ) && ( tmp_intersection_record.t_ > 0.0 ) )
+                    {
+                        intersection_record = tmp_intersection_record;
+                        intersection_result = true;
+                    }
+                }
+            }
+            break;
+
+        case AccelerationStructure::BVH_SAH:
+            intersection_result = bvh_->intersect( ray, intersection_record);
+            break;
+    }
+
+    return intersection_result;
+}
+
+void Scene::buildAccelerationStructure( void )
+{
+    if ( acceleration_structure_ == Scene::AccelerationStructure::BVH_SAH )
+    {
+        buildBVH();
+        std::clog << std::endl;
+    }
+}
+
+void Scene::buildBVH( void )
+{
+    bvh_ = new BVH( primitives_ );
+}
 
 void Scene::load( void ) 
 {
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ 
-        glm::vec3{ 0.0f, 0.0f, 0.0f }, 1.0f, glm::vec3{ 0.0f, 0.0f, 0.0f }, glm::vec3{ 0.0f, 0.0f, 0.0f }, false, true}));
-
+        glm::vec3{ 0.0f, 0.0f, 1.0f }, 0.5f, glm::vec3{ 0.0f, 0.0f, 0.0f }, glm::vec3{ 5.0f, 5.0f, 5.0f }, false, false}));
+/*
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ 
-        glm::vec3{ 4.0f, 4.0f, 2.0f }, 2.0f, glm::vec3{ 0.0f, 0.0f, 0.0f }, glm::vec3{ 5.0f, 5.0f, 5.0f }, false, false}));
+        glm::vec3{ 0.0f, 0.0f, 0.0f }, 1.0f, glm::vec3{ 0.0f, 0.0f, 0.0f }, glm::vec3{ 0.0f, 0.0f, 0.0f }, false, true}));    
     
 
     //left
@@ -43,9 +94,7 @@ void Scene::load( void )
     //back                                                                        
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{
         glm::vec3{-1.2f,-1.0f,-1.5f}, glm::vec3{ 20.0f, -1.0f,-1.5f}, glm::vec3{ -1.2f,20.0f,-1.5f}, glm::vec3{ 1.0f, 1.0f, 1.0f}, glm::vec3{ 0.0f, 0.0f, 0.0f },false, false}));
- 
- 
- 
+ */
  
  
  /*   primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{

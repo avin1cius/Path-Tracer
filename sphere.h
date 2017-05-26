@@ -26,6 +26,8 @@ public:
     bool pmirror_;
     bool glass_;
 
+    BBox getAABB( void ) const;
+
 private:
 
     static const float kIntersectionTestEpsilon_;

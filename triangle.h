@@ -14,6 +14,8 @@ public:
 
     Triangle( const glm::vec3 &p1,const glm::vec3 &p2, const glm::vec3 &p3, const glm::vec3 &brdf, const glm::vec3 &emittance, const bool &pmirror, const bool &glass );
 
+    BBox getAABB( void ) const;
+    
     bool intersect( const Ray &ray,
                     IntersectionRecord &intersection_record ) const;
 

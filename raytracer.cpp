@@ -90,6 +90,7 @@ glm::vec3 RayTracer::L( Ray ray, IntersectionRecord intersection_record, size_t 
 
     if ( curr_depth < maximum_depth_ )
     {
+        //if ( scene_.intersect ( ray, intersection_record ))
         if ( scene_.intersect ( ray, intersection_record ))
         {
             
@@ -230,7 +231,7 @@ void RayTracer::integrate( void )
     Ray ray;
         IntersectionRecord intersection_record;
 
-        #pragma omp parallel for schedule(dynamic, 1) private(ray, intersection_record)
+    #pragma omp parallel for schedule(dynamic, 1) private(ray, intersection_record)
 
     // Loops over image rows
     for ( std::size_t y = 0; y < buffer_.v_resolution_; y++ )

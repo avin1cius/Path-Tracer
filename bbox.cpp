@@ -1,15 +1,14 @@
-#include "boundingbox.h"
+#include "bbox.h"
 
-BoundingBox::BoundingBox(){}
+double BBox::getArea( void ) const
+{
+    double l = ( max_.x - min_.x );
+    double m = ( max_.y - min_.y );
+    double n = ( max_.z - min_.z );
+    return 2.0 * ( l * ( m + n ) + m * n );
+}
 
-BoundingBox::BoundingBox(const glm::vec3 &min, const glm::vec3 &max) :
-min_{min},
-max_{max},
-center_{0.5f * (min_ + max_)}
-{}
-
-bool BoundingBox::intersect( const Ray &ray,
-                        IntersectionRecord &intersection_record ) const
+bool BBox::intersect( const Ray &ray ) const
 {
     glm::vec3 invdir = (1.0f/ray.direction_);
 
@@ -23,10 +22,10 @@ bool BoundingBox::intersect( const Ray &ray,
     bounds[0] = min_;
     bounds[1] = max_;
 
-    float tmin = (bounds[sign[0]].x - ray.origin_.x) * invdir.x;
-    float tmax = (bounds[1 - sign[0]].x - ray.origin_.x) * invdir.x;
-    float tymin = (bounds[sign[1]].y - ray.origin_.y) * invdir.y;
-    float tymax = (bounds[1 - sign[1]].y - ray.origin_.y) * invdir.y; 
+    float tmin = ( bounds[sign[0]].x - ray.origin_.x ) * invdir.x;
+    float tmax = ( bounds[1 - sign[0]].x - ray.origin_.x ) * invdir.x;
+    float tymin = ( bounds[sign[1]].y - ray.origin_.y ) * invdir.y;
+    float tymax = ( bounds[1 - sign[1]].y - ray.origin_.y ) * invdir.y; 
 
     if ((tmin > tymax) || (tymin > tmax))
         return false;

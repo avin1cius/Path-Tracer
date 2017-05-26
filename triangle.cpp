@@ -73,3 +73,12 @@ bool Triangle::intersect( const Ray &ray,
 	return true;
 }
 
+BBox Triangle::getAABB( void ) const
+{
+	BBox aabb;
+
+	aabb.min_ = glm::min( glm::min( p1_, p2_ ), p3_ );
+	aabb.max_ = glm::max( glm::max( p1_, p2_ ), p3_ );
+	aabb.centroid_ = ( 1.0f / 3.0f ) * ( p1_ + p2_ + p2_ );
+	return aabb;
+}

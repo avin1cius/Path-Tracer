@@ -79,11 +79,11 @@ void Scene::buildBVH( void )
 void Scene::load( void ) 
 {
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ 
-        glm::vec3{ 0.0f, 0.0f, 1.0f }, 0.5f, glm::vec3{ 0.0f, 0.0f, 0.0f }, glm::vec3{ 5.0f, 5.0f, 5.0f }, false, false}));
+        glm::vec3{ 0.0f, 0.0f, 3.0f }, 0.8f, glm::vec3{ 0.0f, 0.0f, 0.0f }, glm::vec3{ 6.5f, 6.5f, 6.5f }, false, false}));
 /*
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ 
         glm::vec3{ 0.0f, 0.0f, 0.0f }, 1.0f, glm::vec3{ 0.0f, 0.0f, 0.0f }, glm::vec3{ 0.0f, 0.0f, 0.0f }, false, true}));    
-    
+*/
 
     //left
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{ 
@@ -94,9 +94,8 @@ void Scene::load( void )
     //back                                                                        
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{
         glm::vec3{-1.2f,-1.0f,-1.5f}, glm::vec3{ 20.0f, -1.0f,-1.5f}, glm::vec3{ -1.2f,20.0f,-1.5f}, glm::vec3{ 1.0f, 1.0f, 1.0f}, glm::vec3{ 0.0f, 0.0f, 0.0f },false, false}));
- */
  
- 
+  
  /*   primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{
         glm::vec3{ 3.0f, 3.0f, 5.0f}, glm::vec3{ 3.0f,-3.0f, 5.0f}, glm::vec3{ 3.0f,-3.0f,-4.0f}, glm::vec3{ 0.0f, 1.0f, 0.0f}, glm::vec3{ 0.0f, 0.0f, 0.0f }}));  
     //parede esquerda
@@ -114,7 +113,8 @@ void Scene::load( void )
         glm::vec3{-3.0f,-3.0f,-4.0f}, glm::vec3{ 3.0f,-3.0f,-4.0f}, glm::vec3{-3.0f,-3.0f, 4.0f}, glm::vec3{ 0.2f, 0.2f, 0.2f}, glm::vec3{ 0.0f, 0.0f, 0.0f }}));
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{
         glm::vec3{ 3.0f,-3.0f,-4.0f}, glm::vec3{ 3.0f,-3.0f, 4.0f}, glm::vec3{-3.0f,-3.0f, 4.0f}, glm::vec3{ 0.2f, 0.2f, 0.2f}, glm::vec3{ 0.0f, 0.0f, 0.0f }})); 
-*/}
+*/
+}
 
 void Scene::loadObject(const char * obj)
 {
@@ -124,7 +124,10 @@ void Scene::loadObject(const char * obj)
 
     unsigned int mesh, face;
 
-    srand(std::time(0));
+    float s = 6.0f;
+    float t_y = -0.9f;
+
+    //srand(std::time(0));
 
     for (mesh = 0 ; mesh < scene->mNumMeshes; mesh++) 
     {
@@ -144,19 +147,19 @@ void Scene::loadObject(const char * obj)
             //float b = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
 
             primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{ 
-                glm::vec3 { (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[0]].x, 
-                            (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[0]].y, 
-                            (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[0]].z},
+                glm::vec3 { (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[0]].x*s, 
+                            (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[0]].y*s + t_y, 
+                            (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[0]].z*s},
                                                                                       
-                glm::vec3 { (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[1]].x,
-                            (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[1]].y,
-                            (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[1]].z},
+                glm::vec3 { (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[1]].x*s,
+                            (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[1]].y*s + t_y,
+                            (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[1]].z*s},
 
-                glm::vec3 { (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[2]].x,
-                            (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[2]].y,
-                            (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[2]].z},
+                glm::vec3 { (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[2]].x*s,
+                            (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[2]].y*s + t_y,
+                            (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[2]].z*s},
                                                                                                                                                                                  
-                glm::vec3 { brdf.r, brdf.g, brdf.b },
+                glm::vec3 { 0.5334f, 0.84f, 0.886f},//brdf.r, brdf.g, brdf.b },
                 glm::vec3 { emittance.r, emittance.g, emittance.b },false, false})); 
         }
     }

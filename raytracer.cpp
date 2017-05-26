@@ -90,7 +90,6 @@ glm::vec3 RayTracer::L( Ray ray, IntersectionRecord intersection_record, size_t 
 
     if ( curr_depth < maximum_depth_ )
     {
-        //if ( scene_.intersect ( ray, intersection_record ))
         if ( scene_.intersect ( ray, intersection_record ))
         {
             
@@ -115,106 +114,70 @@ glm::vec3 RayTracer::L( Ray ray, IntersectionRecord intersection_record, size_t 
                         double fresnel = rSchlick1(intersection_record.normal_, (ray.direction_), n1, n2);
                         double r = (double) (rand()) / (double) (RAND_MAX);
                     
-
-                    if(r<fresnel){
-                        refl_ray = get_reflection(intersection_record, ray);
-                        Lo = L(refl_ray, intersection_record, ++curr_depth);
-                    } 
+                        if(r<fresnel){
+                            refl_ray = get_reflection(intersection_record, ray);
+                            Lo = L(refl_ray, intersection_record, ++curr_depth);
+                        } 
                     
-                    else{
+                        else{
 
-                        const float n = n1/n2;
+                            const float n = n1/n2;
 
-                        const float cosI = -glm::dot(intersection_record.normal_, ray.direction_);
+                            const float cosI = -glm::dot(intersection_record.normal_, ray.direction_);
 
-                        const double sinT2 = n * n * (1.0 - cosI * cosI);
+                            const double sinT2 = n * n * (1.0 - cosI * cosI);
 
-                        const float cosT = glm::sqrt(1.0 - sinT2);
+                            const float cosT = glm::sqrt(1.0 - sinT2);
 
-                        refl_ray.direction_ =glm::normalize( n * ray.direction_ + (n*cosI - cosT) * intersection_record.normal_);
-                        refl_ray.origin_ = intersection_record.position_ + (0.001f*refl_ray.direction_);
+                            refl_ray.direction_ =glm::normalize( n * ray.direction_ + (n*cosI - cosT) * intersection_record.normal_);
+                            refl_ray.origin_ = intersection_record.position_ + (0.001f*refl_ray.direction_);
                         
-                        Lo = L(refl_ray, intersection_record, ++curr_depth);
+                            Lo = L(refl_ray, intersection_record, ++curr_depth);
+                        }                       
                     }
-
-                        
-                    }else{//SAINDO DO VIDRO
+                    else{//SAINDO DO VIDRO
                         n1 = 2.0f;
                         n2 = 1.0f;
 
                         const float n = n1/n2;
                         double cosX = -glm::dot(intersection_record.normal_, ray.direction_);
                         const double sinT2 = n * n * (1.0 - cosX * cosX);
-                        if(sinT2 > 1.0){
 
+                        if(sinT2 > 1.0){
                             refl_ray = get_reflection(intersection_record, ray);
                             Lo = L(refl_ray, intersection_record, ++curr_depth);
+                        }
+                        else{
+                            double fresnel = rSchlick2(intersection_record.normal_, (ray.direction_), n1, n2);
+                            double r = (double) (rand()) / (double) (RAND_MAX+1.0);                       
 
-                        }else{
+                            if(r<fresnel){
+                                refl_ray = get_reflection(intersection_record, ray);
+                                Lo = L(refl_ray, intersection_record, ++curr_depth);
+                            }
+                            else{
+                                const float n = n1/n2;
 
+                                const float cosI = glm::dot(intersection_record.normal_, ray.direction_);
 
-                        double fresnel = rSchlick2(intersection_record.normal_, (ray.direction_), n1, n2);
-                        double r = (double) (rand()) / (double) (RAND_MAX+1.0);
+                                const double sinT2 = n * n * (1.0 - cosI * cosI);
+
+                                const float cosT = glm::sqrt(1.0 - sinT2);
                         
-                        
-
-                    if(r<fresnel){
-                        refl_ray = get_reflection(intersection_record, ray);
-                        Lo = L(refl_ray, intersection_record, ++curr_depth);
-                    }else{
-
-                        const float n = n1/n2;
-
-                        const float cosI = glm::dot(intersection_record.normal_, ray.direction_);
-
-                        const double sinT2 = n * n * (1.0 - cosI * cosI);
-
-                        const float cosT = glm::sqrt(1.0 - sinT2);
-                        
-                        refl_ray.direction_ = glm::normalize(n * ray.direction_ + (n * cosI - cosT) * intersection_record.normal_);
-                        refl_ray.origin_ = intersection_record.position_ + (0.001f*refl_ray.direction_);
-                        Lo = L(refl_ray, intersection_record, ++curr_depth);
+                                refl_ray.direction_ = glm::normalize(n * ray.direction_ + (n * cosI - cosT) * intersection_record.normal_);
+                                refl_ray.origin_ = intersection_record.position_ + (0.001f*refl_ray.direction_);
+                                Lo = L(refl_ray, intersection_record, ++curr_depth);
                             }
                         }  
                     }
-                    
-           /*         double fresnel = rSchlick2(intersection_record.normal_, (ray.direction_), n1, n2);
-
-                    double r = (double) (rand()) / (double) (RAND_MAX + 1.0f);
-                    
-
-                    if(r<fresnel){
-                        refl_ray = get_reflection(intersection_record, ray);
-                        Lo = L(refl_ray, intersection_record, ++curr_depth);
-                    }else{
-
-
-                        const float n = n1/n2;
-
-                        const float cosI = glm::dot(intersection_record.normal_, ray.direction_);
-
-                        const double sinT2 = n * n * (1.0 - cosI * cosI);
-
-                      //  if (sinT2 > 1.0)
-                        //    return glm::vec3{0.0f,0.0f,0.0f};// TIR
-
-                        const float cosT = glm::sqrt(1.0 - sinT2);
-                        refl_ray.direction_ = n * ray.direction_ + (n * cosI - cosT) * intersection_record.normal_;
-                        refl_ray.origin_ = intersection_record.position_ + (0.001f*refl_ray.direction_);
-                        Lo = L(refl_ray, intersection_record, ++curr_depth);
-                    }*/
-
-
-                }else{//If its diffuse
-            
-            refl_ray = get_new_ray( intersection_record );
-
-            Lo = intersection_record.emittance_ + 2.0f * ((float) M_PI) * intersection_record.brdf_ *
-            L( refl_ray, intersection_record, ++curr_depth ) * glm::dot( intersection_record.normal_, refl_ray.direction_ ); 
-
                 }
-            }
-                              
+                else{//If its diffuse            
+                    refl_ray = get_new_ray( intersection_record );
+
+                    Lo = intersection_record.emittance_ + 2.0f * ((float) M_PI) * intersection_record.brdf_ *
+                    L( refl_ray, intersection_record, ++curr_depth ) * glm::dot( intersection_record.normal_, refl_ray.direction_ ); 
+                }
+            }                              
         }
     }
     return Lo;
@@ -229,7 +192,7 @@ void RayTracer::integrate( void )
     // Image space origin (i.e. x = 0 and y = 0) at the top left corner.
 
     Ray ray;
-        IntersectionRecord intersection_record;
+    IntersectionRecord intersection_record;
 
     #pragma omp parallel for schedule(dynamic, 1) private(ray, intersection_record)
 

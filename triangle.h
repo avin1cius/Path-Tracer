@@ -12,7 +12,8 @@ public:
 
     Triangle( void );
 
-    Triangle( const glm::vec3 &p1,const glm::vec3 &p2, const glm::vec3 &p3, const glm::vec3 &brdf, const glm::vec3 &emittance, const bool &pmirror, const bool &glass );
+    Triangle( const glm::vec3 &p1,const glm::vec3 &p2, const glm::vec3 &p3, 
+        const glm::vec3 &brdf, const glm::vec3 &emittance, const bool &pmirror, const bool &glass, const bool &metal );
 
     BBox getAABB( void ) const;
     
@@ -27,6 +28,7 @@ public:
     glm::vec3 emittance_ = { 0.0f, 0.0f, 0.0f};
     bool pmirror_;
     bool glass_;
+    bool metal_;
 
 private:
 

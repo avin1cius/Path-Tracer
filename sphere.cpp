@@ -3,13 +3,15 @@
 Sphere::Sphere( void )
 {}
 
-Sphere::Sphere( const glm::vec3 &center, float radius, const glm::vec3 &brdf, const glm::vec3 &emittance, const bool &pmirror, const bool &glass) :
+Sphere::Sphere( const glm::vec3 &center, float radius, const glm::vec3 &brdf, const glm::vec3 &emittance, 
+    const bool &pmirror, const bool &glass, const bool &metal ) :
         center_{ center },
         radius_{ radius },
         brdf_{ brdf },
         emittance_{ emittance},
-        pmirror_{pmirror},
-        glass_{glass}
+        pmirror_{ pmirror },
+        glass_{ glass },
+        metal_{ metal }
 {}
 
 bool Sphere::intersect( const Ray &ray,
@@ -48,6 +50,7 @@ bool Sphere::intersect( const Ray &ray,
     intersection_record.emittance_ = emittance_;
     intersection_record.pmirror_ = pmirror_;
     intersection_record.glass_ = glass_;
+    intersection_record.metal_ = metal_;
 
     return true;
 }

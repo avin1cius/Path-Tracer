@@ -12,7 +12,8 @@ public:
 
     Sphere( void );
 
-    Sphere( const glm::vec3 &center, float radius, const glm::vec3 &brdf, const glm::vec3 &emittance, const bool &pmirror, const bool &glass );
+    Sphere( const glm::vec3 &center, float radius, const glm::vec3 &brdf, const glm::vec3 &emittance, 
+        const bool &pmirror, const bool &glass, const bool &metal );
 
     bool intersect( const Ray &ray,
                     IntersectionRecord &intersection_record ) const;
@@ -25,6 +26,7 @@ public:
     glm::vec3 emittance_ = { 0.0f, 0.0f, 0.0f };
     bool pmirror_;
     bool glass_;
+    bool metal_;
 
     BBox getAABB( void ) const;
 

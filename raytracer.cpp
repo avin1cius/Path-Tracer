@@ -76,7 +76,7 @@ double RayTracer::rSchlick2(const glm::vec3 normal, glm::vec3 incident, double n
     return r0 + ( 1.0 - r0 ) * x * x * x * x * x;
 }
 
-glm::dvec3 RayTracer::cook_torrance( Ray wi, Ray wo, IntersectionRecord intersection_record )
+glm::dvec3 RayTracer::cook_torrance( glm::vec3 wi, glm::vec3 wo, IntersectionRecord intersection_record )
 {
     glm:dvec3 h = glm::normalize( (wo + wi) / 2.0 );
     double nh  = glm::abs( glm::dot( intersection_record.normal_, h));
@@ -193,8 +193,9 @@ glm::vec3 RayTracer::L( Ray ray, IntersectionRecord intersection_record, size_t 
 
             else if( intersection_record.metal_ )//if its metal
             {
-                refl_ray = get_new_ray( intersection_record);
-                cook_torrance( get_new_ray( refl_ray, ray, intersection_record );
+                refl_ray = get_new_ray( intersection_record );
+                Lo = intersection_record.emittance_ + cook_torrance( refl_ray.direction_, ray.direction_, intersection_record ) *
+                L( refl_ray, intersection_record, ++curr_depth ) * glm::dot( intersection_record.normal_, refl_ray.direction_ );
             }
 
             else//if its diffuse  
@@ -203,12 +204,13 @@ glm::vec3 RayTracer::L( Ray ray, IntersectionRecord intersection_record, size_t 
 
                 Lo = intersection_record.emittance_ + 2.0f * ((float) M_PI) * intersection_record.brdf_ *
                 L( refl_ray, intersection_record, ++curr_depth ) * glm::dot( intersection_record.normal_, refl_ray.direction_ ); 
-                }
-            }                              
-        }
+            }
+        }                              
     }
     return Lo;
 }
+    
+
 
 void RayTracer::integrate( void )
 {

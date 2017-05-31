@@ -78,14 +78,16 @@ double RayTracer::rSchlick2(const glm::vec3 normal, glm::vec3 incident, double n
 
 glm::dvec3 RayTracer::cook_torrance( glm::vec3 wi, glm::vec3 wo, IntersectionRecord intersection_record )
 {
-    glm:dvec3 h = glm::normalize( (wo + wi) / 2.0 );
-    double nh  = glm::abs( glm::dot( intersection_record.normal_, h));
-    double nwo = glm::abs( glm::dot( intersection_record.normal_, wo ));
-    double nwi = glm::abs( glm::dot( intersection_record.normal_, wi ));
-    double hwo = glm::abs( glm::dot( h, wo ));
-    double hwi = glm::abs( glm::dot( h, wi ));
+    glm::dvec3 h = glm::normalize( (wo + wi) / 2.0f );
+    double nh  = glm::abs( glm::dot( (glm::dvec3)intersection_record.normal_, h));
+    double nwo = glm::abs( glm::dot( (glm::dvec3)intersection_record.normal_, (glm::dvec3)wo ));
+    double nwi = glm::abs( glm::dot( (glm::dvec3)intersection_record.normal_,(glm::dvec3) wi ));
+    double hwo = glm::abs( glm::dot( h, (glm::dvec3)wo ));
+    double hwi = glm::abs( glm::dot( h, (glm::dvec3)wi ));
 
     //Beckmann
+
+    double m = 0.35;
     double nh2 = nh * nh;
     double m2 = m * m;
     double d1 = 1.0 / ( M_PI * m2 * nh2 * nh2);
@@ -94,17 +96,17 @@ glm::dvec3 RayTracer::cook_torrance( glm::vec3 wi, glm::vec3 wo, IntersectionRec
 
     //Geometric term
 
-    double g1 = 2.0 * nh / hwo
+    double g1 = 2.0 * nh / hwo;
     double G = glm::min( 1.0, glm::min(g1 * nwo, g1 * nwi ));
 
     //Fresnel term
 
     double one_minus_hwi_5 = 1.0 - hwi * 1.0 - hwi * 1.0 - hwi * 1.0 - hwi * 1.0 - hwi;
-    glm::dvec3 F = intersection_record.brdf_ + ( 1.0 - intersection_record.brdf_) * one_minus_hwi_5;
+    glm::dvec3 F = (glm::dvec3) intersection_record.brdf_ + ( 1.0 - (glm::dvec3) intersection_record.brdf_) * one_minus_hwi_5;
 
     //Cook-Torrance
 
-    return ( F * D * G) / ( 4.0 * now * nwi );
+    return ( F * D * G) / ( 4.0 * nwo * nwi );
 }
 
 
@@ -194,7 +196,7 @@ glm::vec3 RayTracer::L( Ray ray, IntersectionRecord intersection_record, size_t 
             else if( intersection_record.metal_ )//if its metal
             {
                 refl_ray = get_new_ray( intersection_record );
-                Lo = intersection_record.emittance_ + cook_torrance( refl_ray.direction_, ray.direction_, intersection_record ) *
+                Lo = intersection_record.emittance_ + (glm::vec3)cook_torrance( refl_ray.direction_, ray.direction_, intersection_record ) *
                 L( refl_ray, intersection_record, ++curr_depth ) * glm::dot( intersection_record.normal_, refl_ray.direction_ );
             }
 

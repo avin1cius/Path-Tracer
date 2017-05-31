@@ -32,6 +32,8 @@ public:
 
     double rSchlick2(const glm::vec3 normal, glm::vec3 incident, double n1, double n2);
 
+    glm::dvec3 cook_torrance( glm::vec3 wi, glm::vec3 wo, IntersectionRecord intersection_record );
+
 private:
 
     const Camera &camera_;

@@ -26,7 +26,6 @@ Ray RayTracer::get_new_ray( IntersectionRecord intersection_record )
 
     glm::vec3 cartesian_coordinate{ cosf(phi)*sinf(theta), cosf(theta), sinf(phi)*sinf(theta) };
 
-
     return Ray{ intersection_record.position_ + (intersection_record.normal_*0.001f), onb_.getBasisMatrix() * cartesian_coordinate };
 }
 
@@ -76,14 +75,14 @@ double RayTracer::rSchlick2(const glm::vec3 normal, glm::vec3 incident, double n
     return r0 + ( 1.0 - r0 ) * x * x * x * x * x;
 }
 
-glm::dvec3 RayTracer::cook_torrance( glm::vec3 wi, glm::vec3 wo, IntersectionRecord intersection_record )
+glm::dvec3 RayTracer::cook_torrance( glm::dvec3 wi, glm::dvec3 wo, IntersectionRecord intersection_record )
 {
-    glm::dvec3 h = glm::normalize( (wo + wi) / 2.0f );
-    double nh  = glm::abs( glm::dot( (glm::dvec3)intersection_record.normal_, h));
-    double nwo = glm::abs( glm::dot( (glm::dvec3)intersection_record.normal_, (glm::dvec3)wo ));
-    double nwi = glm::abs( glm::dot( (glm::dvec3)intersection_record.normal_,(glm::dvec3) wi ));
-    double hwo = glm::abs( glm::dot( h, (glm::dvec3)wo ));
-    double hwi = glm::abs( glm::dot( h, (glm::dvec3)wi ));
+    glm::dvec3 h = glm::normalize( (wo - wi) / 2.0 );
+    double nh  = glm::abs( glm::dot( glm::dvec3( intersection_record.normal_ ), h));
+    double nwo = glm::abs( glm::dot( glm::dvec3( intersection_record.normal_ ), wo ));
+    double nwi = glm::abs( glm::dot( glm::dvec3( intersection_record.normal_ ), -wi ));
+    double hwo = glm::abs( glm::dot( h, wo ));
+    double hwi = glm::abs( glm::dot( h, -wi ));
 
     //Beckmann
 
@@ -101,8 +100,8 @@ glm::dvec3 RayTracer::cook_torrance( glm::vec3 wi, glm::vec3 wo, IntersectionRec
 
     //Fresnel term
 
-    double one_minus_hwi_5 = 1.0 - hwi * 1.0 - hwi * 1.0 - hwi * 1.0 - hwi * 1.0 - hwi;
-    glm::dvec3 F = (glm::dvec3) intersection_record.brdf_ + ( 1.0 - (glm::dvec3) intersection_record.brdf_) * one_minus_hwi_5;
+    double one_minus_hwi_5 = ( 1.0 - hwi ) * ( 1.0 - hwi ) * ( 1.0 - hwi ) * ( 1.0 - hwi ) * ( 1.0 - hwi );
+    glm::dvec3 F = M_PI * glm::dvec3( intersection_record.brdf_ ) + ( glm::dvec3(1.0) - ( M_PI * glm::dvec3( intersection_record.brdf_ ) ) ) * one_minus_hwi_5;
 
     //Cook-Torrance
 
@@ -196,7 +195,7 @@ glm::vec3 RayTracer::L( Ray ray, IntersectionRecord intersection_record, size_t 
             else if( intersection_record.metal_ )//if its metal
             {
                 refl_ray = get_new_ray( intersection_record );
-                Lo = intersection_record.emittance_ + (glm::vec3)cook_torrance( refl_ray.direction_, ray.direction_, intersection_record ) *
+                Lo = intersection_record.emittance_ + glm::vec3( cook_torrance( glm::dvec3( refl_ray.direction_ ), glm::dvec3( ray.direction_ ), intersection_record )) *
                 L( refl_ray, intersection_record, ++curr_depth ) * glm::dot( intersection_record.normal_, refl_ray.direction_ );
             }
 
@@ -212,15 +211,9 @@ glm::vec3 RayTracer::L( Ray ray, IntersectionRecord intersection_record, size_t 
     return Lo;
 }
     
-
-
 void RayTracer::integrate( void )
 {
-    //IntersectionRecord intersection_record;
-
-    //glm::vec3 final_color{ 0.0f, 0.0f, 0.0f };
-
-    // Image space origin (i.e. x = 0 and y = 0) at the top left corner.
+    //Image space origin (i.e. x = 0 and y = 0) at the top left corner.
 
     Ray ray;
     IntersectionRecord intersection_record;
@@ -259,10 +252,7 @@ void RayTracer::integrate( void )
                 //final_color = final_color + intersection_record.color_;
                 buffer_.buffer_data_[x][y] += L( ray, intersection_record, 0 );            
             }
-
-            //buffer_.buffer_data_[x][y] = glm::vec3{ final_color / static_cast <float> (samples_) };
             buffer_.buffer_data_[x][y] /= static_cast <float> (samples_);
-            //final_color = { 0.0f, 0.0f, 0.0f };
         }
     }
 

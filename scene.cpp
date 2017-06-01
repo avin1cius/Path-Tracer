@@ -78,11 +78,15 @@ void Scene::buildBVH( void )
 
 void Scene::load( void ) 
 {
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ 
-        glm::vec3{ 0.0f, 5.0f, 0.0f }, 0.8f, glm::vec3{ 0.0f, 0.0f, 0.0f }, glm::vec3{ 6.0f, 6.0f, 6.0f }, false, false, false}));
+  //  primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ 
+    //    glm::vec3{ 0.0f, 5.0f, 0.0f }, 0.8f, glm::vec3{ 0.0f, 0.0f, 0.0f }, glm::vec3{ 6.0f, 6.0f, 6.0f }, false, false, false}));
 
-    //primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ 
-      //  glm::vec3{ 0.0f, 0.0f, 0.0f }, 1.0f, glm::vec3{ 1.0f, 0.71f, 0.29f }, glm::vec3{ 0.0f, 0.0f, 0.0f }, false, true, false}));    
+    //ceiling light 1
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{ 
+        glm::vec3{-1.0f,4.95f,4.5f}, glm::vec3{ -1.0f, 4.95f, 5.5f}, glm::vec3{ 1.0f,4.95f,4.5f}, glm::vec3{ 0.75f,0.75f,0.75f}, glm::vec3{ 7.0f, 7.0f, 7.0f }, false, false, false}));
+    //ceiling light 1
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{ 
+        glm::vec3{1.0f,4.95f,5.5f}, glm::vec3{ 1.0f, 4.95f, 5.5f}, glm::vec3{ 1.0f,4.95f,4.5f}, glm::vec3{ 0.75f,0.75f,0.75f}, glm::vec3{ 7.0f, 7.0f, 7.0f }, false, false, false}));
 
 
     //front triangle
@@ -160,14 +164,11 @@ void Scene::loadObject(const char * obj)
 
     unsigned int mesh, face;
 
-    float s = 1.0f;
-    float t_y = -1.0f;
+    float s = 0.8f;
+    float t_y = 0.0f;
     float t_x = 0.0f;
     float t_z = 0.0f;
 
-    glm::mat3 Rot = {cos(180), 0,sin(180),
-                     0,      1,     0,
-                     -sin(180),0,cos(180) };
 
     //srand(std::time(0));
 
@@ -191,22 +192,20 @@ void Scene::loadObject(const char * obj)
             glm::vec3 p1 = { (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[0]].x, 
                             (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[0]].y, 
                             (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[0]].z};
+            p1 = p1*s;
 
-            p1 = p1 * Rot;
-            p1.y = p1.y + t_y;
+           
 
             glm::vec3 p2 = { (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[1]].x,
                             (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[1]].y,
                             (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[1]].z};
-            p2 = p2 * Rot;
-
-            p2.y = p2.y + t_y;
+            
+            p2 = p2 * s;
 
             glm::vec3 p3 = { (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[2]].x,
                             (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[2]].y,
                             (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[2]].z};
-            p3 = p3 * Rot;
-            p3.y = p3.y + t_y;
+            p3 = p3 * s;
 
             primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{ p1, p2, p3,                                                                                                                                                              
                 glm::vec3 { 1.00f, 0.71f, 0.29f},//brdf.r, brdf.g, brdf.b },

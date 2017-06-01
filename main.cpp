@@ -31,7 +31,7 @@ int main( void )
     scene.buildAccelerationStructure();
 
     glm::vec3 background_color{ 0.0f, 0.0f, 0.0f };
-    size_t samples = 10; //samples per pixel
+    size_t samples = 30; //samples per pixel
     size_t maximum_depth = 5;
     Buffer rendering_buffer{ x_resolution, y_resolution };
     

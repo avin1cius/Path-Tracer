@@ -58,9 +58,14 @@ void Buffer::save( const std::string &filename ) const
             //         from [0.0, 1.0] to [0.0, 255.0], then
             //         from [0.0, 255.0] to [0.5, 255.5], then
             //         from [0.5, 255.5] to [0, 255] with round to nearest.
-            rendering_file << static_cast< int >( clamp( buffer_data_[x][y][0] ) * 255.0f + 0.5f ) << " ";
+            /*rendering_file << static_cast< int >( clamp( buffer_data_[x][y][0] ) * 255.0f + 0.5f ) << " ";
             rendering_file << static_cast< int >( clamp( buffer_data_[x][y][1] ) * 255.0f + 0.5f ) << " ";
-            rendering_file << static_cast< int >( clamp( buffer_data_[x][y][2] ) * 255.0f + 0.5f ) << " ";
+            rendering_file << static_cast< int >( clamp( buffer_data_[x][y][2] ) * 255.0f + 0.5f ) << " ";*/
+
+            //gama compression
+            rendering_file << static_cast< int >( pow( clamp( buffer_data_[x][y][0] ), 1.0f/2.2f ) * 255 + 0.5f ) << " ";
+            rendering_file << static_cast< int >( pow( clamp( buffer_data_[x][y][1] ), 1.0f/2.2f ) * 255 + 0.5f ) << " ";
+            rendering_file << static_cast< int >( pow( clamp( buffer_data_[x][y][2] ), 1.0f/2.2f ) * 255 + 0.5f ) << " ";
         }
     }
 

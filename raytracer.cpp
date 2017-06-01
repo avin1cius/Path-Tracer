@@ -77,32 +77,12 @@ double RayTracer::rSchlick2(const glm::vec3 normal, glm::vec3 incident, double n
 
 glm::dvec3 RayTracer::cook_torrance( glm::dvec3 wi, glm::dvec3 wo, IntersectionRecord intersection_record )
 {
-<<<<<<< HEAD
     glm::dvec3 h = glm::normalize( (wo - wi) / 2.0 );
     double nh  = glm::abs( glm::dot( glm::dvec3( intersection_record.normal_ ), h));
     double nwo = glm::abs( glm::dot( glm::dvec3( intersection_record.normal_ ), wo ));
     double nwi = glm::abs( glm::dot( glm::dvec3( intersection_record.normal_ ), -wi ));
     double hwo = glm::abs( glm::dot( h, wo ));
     double hwi = glm::abs( glm::dot( h, -wi ));
-=======
-    
-    ONB tangent_frame;
-                tangent_frame.setFromV( (glm::dvec3) intersection_record.normal_ );
-
-                glm::dmat3x3 tangent_to_universe_space = tangent_frame.getBasisMatrix();
-                glm::dmat3x3 universe_to_tangent_space = glm::transpose( tangent_to_universe_space );
-
-    glm::dvec3 w_i = universe_to_tangent_space * (glm::dvec3)-wi;
-
-    glm::dvec3 w_o = universe_to_tangent_space * (glm::dvec3)wo;
-    
-    glm::dvec3 h = glm::normalize((w_i + w_o));
-    double nh  = glm::abs(  h.y );
-    double nwo = glm::abs(  w_o.y );
-    double nwi = glm::abs(  w_i.y );
-    double hwo = glm::abs( glm::dot( h, w_o ));
-    double hwi = glm::abs( glm::dot( h, w_i ));
->>>>>>> 79379bf16612739e6b8837579d91b5dacf6583c5
 
     //Beckmann
 
@@ -111,24 +91,18 @@ glm::dvec3 RayTracer::cook_torrance( glm::dvec3 wi, glm::dvec3 wo, IntersectionR
     double m2 = m * m;
     double d1 = 1.0 / ( M_PI * m2 * nh2 * nh2);
     double d2 = ( nh2 - 1.0 ) / (m2 * nh2 );
-    double D = d1 * exp( d2 );
+    double D = d1 * glm::exp( d2 );
 
     //Geometric term
 
-    double g1 = 2.0 * nh / hwi;
+    double g1 = 2.0 * nh / hwo;
     double G = glm::min( 1.0, glm::min(g1 * nwo, g1 * nwi ));
 
     //Fresnel term
 
-<<<<<<< HEAD
     double one_minus_hwi_5 = ( 1.0 - hwi ) * ( 1.0 - hwi ) * ( 1.0 - hwi ) * ( 1.0 - hwi ) * ( 1.0 - hwi );
     glm::dvec3 F = M_PI * glm::dvec3( intersection_record.brdf_ ) + ( glm::dvec3(1.0) - ( M_PI * glm::dvec3( intersection_record.brdf_ ) ) ) * one_minus_hwi_5;
 
-=======
-    double one_minus_hwi_5 = (1.0 - hwo) * (1.0 - hwo) * (1.0 - hwo) * (1.0 - hwo) * (1.0 - hwo);
-    glm::dvec3 F = (M_PI)*(glm::dvec3)intersection_record.brdf_ + ( 1.0 -  (M_PI)*(glm::dvec3)intersection_record.brdf_) * one_minus_hwi_5;
-    //printf("\n(%.2f, %.2f, %.2f)", F.x, F.y, F.z);
->>>>>>> 79379bf16612739e6b8837579d91b5dacf6583c5
     //Cook-Torrance
 
     return ( F * D * G) / ( 4.0 * nwo * nwi );
@@ -284,4 +258,3 @@ void RayTracer::integrate( void )
 
     std::clog << std::endl;
 }
-

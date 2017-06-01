@@ -22,13 +22,31 @@ Ray RayTracer::get_new_ray( IntersectionRecord intersection_record )
     float phi = 2 * M_PI * r2;
     ONB onb_;
 
-    onb_.setFromV(intersection_record.normal_);
+    onb_.setFromV( intersection_record.normal_ );
 
     glm::vec3 cartesian_coordinate{ cosf(phi)*sinf(theta), cosf(theta), sinf(phi)*sinf(theta) };
 
-    return Ray{ intersection_record.position_ + (intersection_record.normal_*0.001f), onb_.getBasisMatrix() * cartesian_coordinate };
+    return Ray{ intersection_record.position_ + ( intersection_record.normal_*0.001f ), onb_.getBasisMatrix() * cartesian_coordinate };
 }
 
+Ray RayTracer::get_new_ray2( glm::vec3 ray_direction, IntersectionRecord intersection_record, float roughness )
+{
+    float r1 = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+    float r2 = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+    float theta = glm::atan( sqrt( -( roughness * roughness ) * glm::log( 1 - r1 ) ) );
+    float phi = 2 * M_PI * r2;
+
+    glm::vec3 mn{ cosf(phi)*sinf(theta), cosf(theta), sinf(phi)*sinf(theta) };
+    
+    ONB onb_;
+    onb_.setFromV( intersection_record.normal_ );
+
+    glm::vec3 wo = -glm::normalize( glm::transpose( onb_.getBasisMatrix() )  * ray_direction );
+
+    glm::vec3 wi = 2.0f * mn * glm::dot( mn, wo) - wo;
+
+    return Ray( intersection_record.position_ + ( intersection_record.normal_ * 0.001f ), glm::normalize( onb_.getBasisMatrix() * wi ) );
+}
 
 Ray RayTracer::get_reflection(IntersectionRecord intersection_record, Ray ray)
 {
@@ -45,9 +63,8 @@ Ray RayTracer::get_reflection(IntersectionRecord intersection_record, Ray ray)
     return newray;
 }
 
-
-float RayTracer::rSchlick2(glm::vec3 incident, glm::vec3 normal, float n1, float n2){
-
+float RayTracer::rSchlick(glm::vec3 incident, glm::vec3 normal, float n1, float n2)
+{
     float Ro = (n1 - n2)/(n1 + n2);
     Ro *= Ro;
     float cosX = -glm::dot(normal, incident);
@@ -77,16 +94,16 @@ glm::vec3 RayTracer::Refract(glm::vec3 incident, glm::vec3 normal,float n1, floa
     return n * incident + (n * cos1 - cos2) * normal;
 }
 
-
-
 glm::dvec3 RayTracer::cook_torrance( glm::dvec3 wi, glm::dvec3 wo, IntersectionRecord intersection_record )
 {
-    glm::dvec3 h = glm::normalize( (wo - wi) / 2.0 );
+    wo = -wo;
+    glm::dvec3 h = glm::normalize( (wo + wi) / 2.0 );
+    double cosnwo = glm::dot( glm::dvec3( intersection_record.normal_ ), wo );
     double nh  = glm::abs( glm::dot( glm::dvec3( intersection_record.normal_ ), h));
-    double nwo = glm::abs( glm::dot( glm::dvec3( intersection_record.normal_ ), wo ));
-    double nwi = glm::abs( glm::dot( glm::dvec3( intersection_record.normal_ ), -wi ));
+    double nwo = glm::abs( cosnwo );
+    double nwi = glm::abs( glm::dot( glm::dvec3( intersection_record.normal_ ), wi ));
     double hwo = glm::abs( glm::dot( h, wo ));
-    double hwi = glm::abs( glm::dot( h, -wi ));
+    double hwi = glm::abs( glm::dot( h, wi ));
 
     //Beckmann
 
@@ -107,11 +124,17 @@ glm::dvec3 RayTracer::cook_torrance( glm::dvec3 wi, glm::dvec3 wo, IntersectionR
     double one_minus_hwi_5 = ( 1.0 - hwi ) * ( 1.0 - hwi ) * ( 1.0 - hwi ) * ( 1.0 - hwi ) * ( 1.0 - hwi );
     glm::dvec3 F = M_PI * glm::dvec3( intersection_record.brdf_ ) + ( glm::dvec3(1.0) - ( M_PI * glm::dvec3( intersection_record.brdf_ ) ) ) * one_minus_hwi_5;
 
-    //Cook-Torrance
+    //glm::dvec3 CT = ( F * D * G) / ( 4.0 * nwo * nwi );
+    glm::dvec3 CT = ( F * G) / ( 4.0 * nwo * nwi );
+    
+    //PDF
 
-    return ( F * D * G) / ( 4.0 * nwo * nwi );
+    //double PDF = ( D * nh ) / ( 4.0 * hwi );
+    double PDF = nh / ( 4.0 * hwi );
+
+    //return ( F * D * G) / ( 4.0 * nwo * nwi );
+    return ( CT * cosnwo ) / PDF;
 }
-
 
 glm::vec3 RayTracer::L( Ray ray, IntersectionRecord intersection_record, size_t curr_depth ) //Rendering equation
 {
@@ -129,8 +152,7 @@ glm::vec3 RayTracer::L( Ray ray, IntersectionRecord intersection_record, size_t 
             {
                 refl_ray = get_reflection(intersection_record, ray);
 
-                Lo = L(refl_ray, intersection_record, ++curr_depth);
-            
+                Lo = L(refl_ray, intersection_record, ++curr_depth);            
             }
 
             else if( intersection_record.glass_ )//if its glass
@@ -150,7 +172,7 @@ glm::vec3 RayTracer::L( Ray ray, IntersectionRecord intersection_record, size_t 
                 }
                 glm::vec3 newRayDirection;
 
-                float schlick = rSchlick2(ray.direction_, intersection_record.normal_, n1, n2);
+                float schlick = rSchlick(ray.direction_, intersection_record.normal_, n1, n2);
                 if(random < schlick)
                     newRayDirection = get_reflection(intersection_record, ray).direction_;
                 else{
@@ -163,11 +185,13 @@ glm::vec3 RayTracer::L( Ray ray, IntersectionRecord intersection_record, size_t 
 
 
             }
-                        else if( intersection_record.metal_ )//if its metal
-                        {
-                            refl_ray = get_new_ray( intersection_record );
-                            Lo = intersection_record.emittance_ + glm::vec3( cook_torrance( glm::dvec3( refl_ray.direction_ ), glm::dvec3( ray.direction_ ), intersection_record )) *
-                            L( refl_ray, intersection_record, ++curr_depth ) * glm::dot( intersection_record.normal_, refl_ray.direction_ );
+            
+            else if( intersection_record.metal_ )//if its metal
+            {
+                //refl_ray = get_new_ray( intersection_record );
+                refl_ray = get_new_ray2( ray.direction_, intersection_record, 0.35f );
+                Lo = intersection_record.emittance_ + 2.0f * glm::vec3( cook_torrance( glm::dvec3( refl_ray.direction_ ), glm::dvec3( ray.direction_ ), intersection_record )) *
+                L( refl_ray, intersection_record, ++curr_depth ) * glm::dot( intersection_record.normal_, refl_ray.direction_ );
             }
 
             else//if its diffuse  

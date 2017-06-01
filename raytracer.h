@@ -24,11 +24,13 @@ public:
 
     Ray get_new_ray( IntersectionRecord );
 
+    Ray get_new_ray2( glm::vec3 , IntersectionRecord , float );
+
     Ray get_reflection( IntersectionRecord, Ray);
 
     glm::vec3 L( Ray, IntersectionRecord, size_t );
 
-    float rSchlick2(glm::vec3 incident, glm::vec3 normal, float n1, float n2);
+    float rSchlick(glm::vec3 incident, glm::vec3 normal, float n1, float n2);
 
     glm::vec3 Refract(glm::vec3 incident, glm::vec3 normal,float n1, float n2);
 

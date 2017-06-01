@@ -28,9 +28,9 @@ public:
 
     glm::vec3 L( Ray, IntersectionRecord, size_t );
 
-    double rSchlick1( const glm::vec3 normal, glm::vec3 incident, double n1, double n2);
+    float rSchlick2(glm::vec3 incident, glm::vec3 normal, float n1, float n2);
 
-    double rSchlick2( const glm::vec3 normal, glm::vec3 incident, double n1, double n2);
+    glm::vec3 Refract(glm::vec3 incident, glm::vec3 normal,float n1, float n2);
 
     glm::dvec3 cook_torrance( glm::dvec3 wi, glm::dvec3 wo, IntersectionRecord intersection_record );
 

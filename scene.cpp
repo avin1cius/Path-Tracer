@@ -87,7 +87,7 @@ void Scene::load( void )
 
     //front triangle
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{ 
-        glm::vec3{-1.0f,0.0f,1.5f}, glm::vec3{ 1.0f, 0.0f, 1.5f}, glm::vec3{ 0.0f,2.0f,1.5f}, glm::vec3{ 0.75f,0.75f,0.75f}, glm::vec3{ 0.0f, 0.0f, 0.0f }, false, false, false}));
+        glm::vec3{-1.2f,0.0f,1.5f}, glm::vec3{ 1.2f, 0.0f, 1.5f}, glm::vec3{ 0.0f,2.4f,1.5f}, glm::vec3{ 0.75f,0.75f,0.75f}, glm::vec3{ 0.0f, 0.0f, 0.0f }, false, false, false}));
     //ground1
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{
         glm::vec3{5.0f,0.0f,0.0f}, glm::vec3{-5.0f, 0.0f, 0.0f}, glm::vec3{ -5.0f,0.0f,10.0f}, glm::vec3{ 0.75f,0.75f,0.75f}, glm::vec3{ 0.0f, 0.0f, 0.0f }, false, false, false}));    
@@ -165,6 +165,10 @@ void Scene::loadObject(const char * obj)
     float t_x = 0.0f;
     float t_z = 0.0f;
 
+    glm::mat3 Rot = {cos(180), 0,sin(180),
+                     0,      1,     0,
+                     -sin(180),0,cos(180) };
+
     //srand(std::time(0));
 
     for (mesh = 0 ; mesh < scene->mNumMeshes; mesh++) 
@@ -184,19 +188,27 @@ void Scene::loadObject(const char * obj)
             //float g = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
             //float b = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
 
-            primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{ 
-                glm::vec3 { (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[0]].x*s + t_x, 
-                            (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[0]].y*s + t_y, 
-                            (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[0]].z*s} + t_z,
-                                                                                      
-                glm::vec3 { (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[1]].x*s + t_x,
-                            (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[1]].y*s + t_y,
-                            (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[1]].z*s} + t_z,
+            glm::vec3 p1 = { (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[0]].x, 
+                            (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[0]].y, 
+                            (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[0]].z};
 
-                glm::vec3 { (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[2]].x*s + t_x,
-                            (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[2]].y*s + t_y,
-                            (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[2]].z*s} + t_z,
-                                                                                                                                                                                 
+            p1 = p1 * Rot;
+            p1.y = p1.y + t_y;
+
+            glm::vec3 p2 = { (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[1]].x,
+                            (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[1]].y,
+                            (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[1]].z};
+            p2 = p2 * Rot;
+
+            p2.y = p2.y + t_y;
+
+            glm::vec3 p3 = { (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[2]].x,
+                            (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[2]].y,
+                            (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[2]].z};
+            p3 = p3 * Rot;
+            p3.y = p3.y + t_y;
+
+            primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{ p1, p2, p3,                                                                                                                                                              
                 glm::vec3 { 1.00f, 0.71f, 0.29f},//brdf.r, brdf.g, brdf.b },
                 glm::vec3 { emittance.r, emittance.g, emittance.b },false, false, true})); 
         }

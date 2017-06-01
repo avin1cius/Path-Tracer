@@ -20,18 +20,18 @@ int main( void )
                                 2.25f,
                                 4.00f, // distance
                                 glm::ivec2{ x_resolution, y_resolution }, 
-                                glm::vec3{ 0.0f, 0.0f, 5.0f },     // position
+                                glm::vec3{ 0.0f, 1.0f, 4.0f },     // position
                                 glm::vec3{ 0.0f, 1.0f, 0.0f },     // up
-                                glm::vec3{ 0.0f, 0.0f, 0.0f } };   // look at
+                                glm::vec3{ 0.0f, 1.0f, 0.0f } };   // look at
     Scene scene{};
 
     scene.load();
-   // scene.loadObject("orns.obj");
+    scene.loadObject("orns.obj");
     scene.acceleration_structure_ = scene.BVH_SAH;
     scene.buildAccelerationStructure();
 
     glm::vec3 background_color{ 0.0f, 0.0f, 0.0f };
-    size_t samples = 300; //samples per pixel
+    size_t samples = 10; //samples per pixel
     size_t maximum_depth = 5;
     Buffer rendering_buffer{ x_resolution, y_resolution };
     

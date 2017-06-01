@@ -107,7 +107,7 @@ glm::dvec3 RayTracer::cook_torrance( glm::dvec3 wi, glm::dvec3 wo, IntersectionR
 
     //Beckmann
 
-    double m = 0.35;
+    double m = 0.3;
     double nh2 = nh * nh;
     double m2 = m * m;
     double d1 = 1.0 / ( M_PI * m2 * nh2 * nh2);
@@ -179,17 +179,15 @@ glm::vec3 RayTracer::L( Ray ray, IntersectionRecord intersection_record, size_t 
                     newRayDirection = Refract(ray.direction_, intersection_record.normal_, n1, n2);
                 }
 
-            refl_ray = {intersection_record.position_ + 0.001f * newRayDirection, newRayDirection};
+                refl_ray = {intersection_record.position_ + 0.001f * newRayDirection, newRayDirection};
 
-            Lo = L(refl_ray, intersection_record, ++curr_depth);
-
-
+                Lo = L(refl_ray, intersection_record, ++curr_depth);
             }
             
             else if( intersection_record.metal_ )//if its metal
             {
                 //refl_ray = get_new_ray( intersection_record );
-                refl_ray = get_new_ray2( ray.direction_, intersection_record, 0.35f );
+                refl_ray = get_new_ray2( ray.direction_, intersection_record, 0.3f );
                 Lo = intersection_record.emittance_ + 2.0f * glm::vec3( cook_torrance( glm::dvec3( refl_ray.direction_ ), glm::dvec3( ray.direction_ ), intersection_record )) *
                 L( refl_ray, intersection_record, ++curr_depth ) * glm::dot( intersection_record.normal_, refl_ray.direction_ );
             }

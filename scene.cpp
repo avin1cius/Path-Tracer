@@ -78,82 +78,77 @@ void Scene::buildBVH( void )
 
 void Scene::load( void ) 
 {
-  //  primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ 
-    //    glm::vec3{ 0.0f, 5.0f, 0.0f }, 0.8f, glm::vec3{ 0.0f, 0.0f, 0.0f }, glm::vec3{ 6.0f, 6.0f, 6.0f }, false, false, false}));
-
     //ceiling light 1
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{ 
         glm::vec3{-1.0f,4.95f,4.5f}, glm::vec3{ -1.0f, 4.95f, 5.5f}, glm::vec3{ 1.0f,4.95f,4.5f}, glm::vec3{ 0.75f,0.75f,0.75f}, glm::vec3{ 7.0f, 7.0f, 7.0f }, false, false, false}));
     //ceiling light 1
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{ 
         glm::vec3{1.0f,4.95f,5.5f}, glm::vec3{ 1.0f, 4.95f, 5.5f}, glm::vec3{ 1.0f,4.95f,4.5f}, glm::vec3{ 0.75f,0.75f,0.75f}, glm::vec3{ 7.0f, 7.0f, 7.0f }, false, false, false}));
-
-
+  
     //front triangle
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{ 
-        glm::vec3{-1.2f,0.0f,1.5f}, glm::vec3{ 1.2f, 0.0f, 1.5f}, glm::vec3{ 0.0f,2.4f,1.5f}, glm::vec3{ 0.75f,0.75f,0.75f}, glm::vec3{ 0.0f, 0.0f, 0.0f }, false, false, false}));
+        glm::vec3{-1.2f,0.0f,1.5f}, glm::vec3{ 1.2f, 0.0f, 1.5f}, glm::vec3{ 0.0f,2.4f,1.5f}, glm::vec3{ 0.17f, 0.17f, 0.17f }, glm::vec3{ 0.0f, 0.0f, 0.0f }, false, false, false}));
     //ground1
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{
-        glm::vec3{5.0f,0.0f,0.0f}, glm::vec3{-5.0f, 0.0f, 0.0f}, glm::vec3{ -5.0f,0.0f,10.0f}, glm::vec3{ 0.75f,0.75f,0.75f}, glm::vec3{ 0.0f, 0.0f, 0.0f }, false, false, false}));    
+        glm::vec3{5.0f,0.0f,0.0f}, glm::vec3{-5.0f, 0.0f, 0.0f}, glm::vec3{ -5.0f,0.0f,10.0f}, glm::vec3{ 1.0f, 1.0f, 1.0f }, glm::vec3{ 0.0f, 0.0f, 0.0f }, false, false, false}));    
     //ground2                                                                        
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{
-        glm::vec3{5.0f,0.0f,0.0f}, glm::vec3{ -5.0f, 0.0f,10.0f}, glm::vec3{ 5.0f,0.0f,10.0f}, glm::vec3{ 0.75f,0.75f,0.75f}, glm::vec3{ 0.0f, 0.0f, 0.0f },false, false, false}));
+        glm::vec3{5.0f,0.0f,0.0f}, glm::vec3{ -5.0f, 0.0f,10.0f}, glm::vec3{ 5.0f,0.0f,10.0f}, glm::vec3{ 1.0f, 1.0f, 1.0f }, glm::vec3{ 0.0f, 0.0f, 0.0f },false, false, false}));
  
     //groundfront                                                                        
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{
-        glm::vec3{5.0f,0.0f,0.0f}, glm::vec3{ -5.0f, 0.0f,0.0f}, glm::vec3{ 0.0f,0.0f,-5.0f}, glm::vec3{ 0.75f,0.75f,0.75f}, glm::vec3{ 0.0f, 0.0f, 0.0f },false, false, false}));
+        glm::vec3{5.0f,0.0f,0.0f}, glm::vec3{ -5.0f, 0.0f,0.0f}, glm::vec3{ 0.0f,0.0f,-5.0f}, glm::vec3{ 1.0f, 1.0f, 1.0f }, glm::vec3{ 0.0f, 0.0f, 0.0f },false, false, false}));
     
     //mirror left 1                                                                        
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{
-        glm::vec3{0.0f,0.0f,-5.0f}, glm::vec3{ 0.0f, 5.0f,-5.0f}, glm::vec3{ -5.0f,0.0f,0.0f}, glm::vec3{ 0.75f,0.75f,0.75f}, glm::vec3{ 0.0f, 0.0f, 0.0f },true, false, false}));
+        glm::vec3{0.0f,0.0f,-5.0f}, glm::vec3{ 0.0f, 5.0f,-5.0f}, glm::vec3{ -5.0f,0.0f,0.0f}, glm::vec3{ 0.75f,0.75f,0.75f }, glm::vec3{ 0.0f, 0.0f, 0.0f },true, false, false}));
 
     //mirror left 2                                                                        
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{
-        glm::vec3{-5.0f,5.0f,0.0f}, glm::vec3{ 0.0f, 5.0f,-5.0f}, glm::vec3{ -5.0f,0.0f,0.0f}, glm::vec3{ 0.75f,0.75f,0.75f}, glm::vec3{ 0.0f, 0.0f, 0.0f },true, false, false}));
+        glm::vec3{-5.0f,5.0f,0.0f}, glm::vec3{ 0.0f, 5.0f,-5.0f}, glm::vec3{ -5.0f,0.0f,0.0f}, glm::vec3{ 0.75f,0.75f,0.75f }, glm::vec3{ 0.0f, 0.0f, 0.0f },true, false, false}));
     
     //mirror right 1                                                                        
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{
-        glm::vec3{0.0f,0.0f,-5.0f}, glm::vec3{ 0.0f, 5.0f,-5.0f}, glm::vec3{ 5.0f,0.0f,0.0f}, glm::vec3{ 0.75f,0.75f,0.75f}, glm::vec3{ 0.0f, 0.0f, 0.0f },true, false, false}));
+        glm::vec3{0.0f,0.0f,-5.0f}, glm::vec3{ 0.0f, 5.0f,-5.0f}, glm::vec3{ 5.0f,0.0f,0.0f}, glm::vec3{ 0.75f,0.75f,0.75f }, glm::vec3{ 0.0f, 0.0f, 0.0f },true, false, false}));
     
     //mirror right 2                                                                        
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{
-        glm::vec3{5.0f,5.0f,0.0f}, glm::vec3{ 0.0f, 5.0f,-5.0f}, glm::vec3{ 5.0f,0.0f,0.0f}, glm::vec3{ 0.75f,0.75f,0.75f}, glm::vec3{ 0.0f, 0.0f, 0.0f },true, false, false}));
+        glm::vec3{5.0f,5.0f,0.0f}, glm::vec3{ 0.0f, 5.0f,-5.0f}, glm::vec3{ 5.0f,0.0f,0.0f}, glm::vec3{ 0.75f,0.75f,0.75f }, glm::vec3{ 0.0f, 0.0f, 0.0f },true, false, false}));
 
     //ceiling front                                                                        
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{
-        glm::vec3{5.0f,5.0f,0.0f}, glm::vec3{ -5.0f, 5.0f,0.0f}, glm::vec3{ 0.0f,5.0f,-5.0f}, glm::vec3{ 0.6f,0.6f,0.6f}, glm::vec3{ 0.0f, 0.0f, 0.0f },false, false, false}));
+        glm::vec3{5.0f,5.0f,0.0f}, glm::vec3{ -5.0f, 5.0f,0.0f}, glm::vec3{ 0.0f,5.0f,-5.0f}, glm::vec3{ 0.968f, 0.086f, 0.086f }, glm::vec3{ 0.0f, 0.0f, 0.0f },false, false, false}));
 
     //ceiling1
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{
-        glm::vec3{5.0f,5.0f,0.0f}, glm::vec3{-5.0f, 5.0f, 0.0f}, glm::vec3{ -5.0f,5.0f,10.0f}, glm::vec3{ 0.6f,0.6f,0.6f}, glm::vec3{ 0.0f, 0.0f, 0.0f }, false, false, false}));    
+        glm::vec3{5.0f,5.0f,0.0f}, glm::vec3{-5.0f, 5.0f, 0.0f}, glm::vec3{ -5.0f,5.0f,10.0f}, glm::vec3{ 0.968f, 0.086f, 0.086f }, glm::vec3{ 0.0f, 0.0f, 0.0f }, false, false, false}));    
     //ceiling2                                                                        
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{
-        glm::vec3{5.0f,5.0f,0.0f}, glm::vec3{ -5.0f, 5.0f,10.0f}, glm::vec3{ 5.0f,5.0f,10.0f}, glm::vec3{ 0.6f,0.6f,0.6f}, glm::vec3{ 0.0f, 0.0f, 0.0f },false, false, false}));
+        glm::vec3{5.0f,5.0f,0.0f}, glm::vec3{ -5.0f, 5.0f,10.0f}, glm::vec3{ 5.0f,5.0f,10.0f}, glm::vec3{ 0.968f, 0.086f, 0.086f }, glm::vec3{ 0.0f, 0.0f, 0.0f },false, false, false}));
     
     //left wall 1
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{
-        glm::vec3{-5.0f,0.0f,0.0f}, glm::vec3{-5.0f, 5.0f, 0.0f}, glm::vec3{ -5.0f,0.0f,10.0f}, glm::vec3{ 0.75f,0.75f,0.75f}, glm::vec3{ 0.0f, 0.0f, 0.0f }, false, false, false}));
+        glm::vec3{-5.0f,0.0f,0.0f}, glm::vec3{-5.0f, 5.0f, 0.0f}, glm::vec3{ -5.0f,0.0f,10.0f}, glm::vec3{ 0.75f,0.75f,0.75f }, glm::vec3{ 0.0f, 0.0f, 0.0f }, false, false, false}));
 
     //left wall 2
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{
-        glm::vec3{-5.0f,5.0f,0.0f}, glm::vec3{-5.0f, 5.0f, 10.0f}, glm::vec3{ -5.0f,0.0f,10.0f}, glm::vec3{ 0.75f,0.75f,0.75f}, glm::vec3{ 0.0f, 0.0f, 0.0f }, false, false, false}));
+        glm::vec3{-5.0f,5.0f,0.0f}, glm::vec3{-5.0f, 5.0f, 10.0f}, glm::vec3{ -5.0f,0.0f,10.0f}, glm::vec3{ 0.75f,0.75f,0.75f }, glm::vec3{ 0.0f, 0.0f, 0.0f }, false, false, false}));
  
     //right wall 1
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{
-        glm::vec3{5.0f,0.0f,0.0f}, glm::vec3{5.0f, 5.0f, 0.0f}, glm::vec3{ 5.0f,0.0f,10.0f}, glm::vec3{ 0.75f,0.75f,0.75f}, glm::vec3{ 0.0f, 0.0f, 0.0f }, false, false, false}));
+        glm::vec3{5.0f,0.0f,0.0f}, glm::vec3{5.0f, 5.0f, 0.0f}, glm::vec3{ 5.0f,0.0f,10.0f}, glm::vec3{ 0.75f,0.75f,0.75f }, glm::vec3{ 0.0f, 0.0f, 0.0f }, false, false, false}));
 
     //right wall 2
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{
-        glm::vec3{5.0f,5.0f,0.0f}, glm::vec3{5.0f, 5.0f, 10.0f}, glm::vec3{ 5.0f,0.0f,10.0f}, glm::vec3{ 0.75f,0.75f,0.75f}, glm::vec3{ 0.0f, 0.0f, 0.0f }, false, false, false}));
+        glm::vec3{5.0f,5.0f,0.0f}, glm::vec3{5.0f, 5.0f, 10.0f}, glm::vec3{ 5.0f,0.0f,10.0f}, glm::vec3{ 0.75f,0.75f,0.75f }, glm::vec3{ 0.0f, 0.0f, 0.0f }, false, false, false}));
 
     //back wall 1
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{
-        glm::vec3{-5.0f,0.0f,10.0f}, glm::vec3{-5.0f, 5.0f, 10.0f}, glm::vec3{ 5.0f,0.0f,10.0f}, glm::vec3{ 0.75f,0.75f,0.75f}, glm::vec3{ 0.0f, 0.0f, 0.0f }, false, false, false}));
+        glm::vec3{-5.0f,0.0f,10.0f}, glm::vec3{-5.0f, 5.0f, 10.0f}, glm::vec3{ 5.0f,0.0f,10.0f}, glm::vec3{ 0.75f,0.75f,0.75f }, glm::vec3{ 0.0f, 0.0f, 0.0f }, false, false, false}));
 
     //back wall 2
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{
-        glm::vec3{5.0f,5.0f,10.0f}, glm::vec3{-5.0f, 5.0f, 10.0f}, glm::vec3{ 5.0f,0.0f,10.0f}, glm::vec3{ 0.75f,0.75f,0.75f}, glm::vec3{ 0.0f, 0.0f, 0.0f }, false, false, false}));
-
+        glm::vec3{5.0f,5.0f,10.0f}, glm::vec3{-5.0f, 5.0f, 10.0f}, glm::vec3{ 5.0f,0.0f,10.0f}, glm::vec3{ 0.75f,0.75f,0.75f }, glm::vec3{ 0.0f, 0.0f, 0.0f }, false, false, false}));
 }
 
 void Scene::loadObject(const char * obj)
@@ -168,7 +163,6 @@ void Scene::loadObject(const char * obj)
     float t_y = 0.0f;
     float t_x = 0.0f;
     float t_z = 0.0f;
-
 
     //srand(std::time(0));
 
@@ -192,14 +186,11 @@ void Scene::loadObject(const char * obj)
             glm::vec3 p1 = { (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[0]].x, 
                             (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[0]].y, 
                             (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[0]].z};
-            p1 = p1*s;
-
-           
+            p1 = p1*s;           
 
             glm::vec3 p2 = { (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[1]].x,
                             (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[1]].y,
-                            (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[1]].z};
-            
+                            (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[1]].z};            
             p2 = p2 * s;
 
             glm::vec3 p3 = { (float)scene->mMeshes[mesh]->mVertices[scene->mMeshes[mesh]->mFaces[face].mIndices[2]].x,
@@ -213,4 +204,3 @@ void Scene::loadObject(const char * obj)
         }
     }
 }
-

@@ -80,14 +80,14 @@ void Scene::load( void )
 {
     //ceiling light 1
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{ 
-        glm::vec3{-1.0f,4.95f,4.5f}, glm::vec3{ -1.0f, 4.95f, 5.5f}, glm::vec3{ 1.0f,4.95f,4.5f}, glm::vec3{ 0.75f,0.75f,0.75f}, glm::vec3{ 7.0f, 7.0f, 7.0f }, false, false, false}));
+        glm::vec3{-1.0f,4.95f,4.5f}, glm::vec3{ -1.0f, 4.95f, 5.5f}, glm::vec3{ 1.0f,4.95f,4.5f}, glm::vec3{ 0.75f,0.75f,0.75f}, glm::vec3{ 10.0f, 15.0f, 10.0f }, false, false, false}));
     //ceiling light 1
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{ 
-        glm::vec3{1.0f,4.95f,5.5f}, glm::vec3{ 1.0f, 4.95f, 5.5f}, glm::vec3{ 1.0f,4.95f,4.5f}, glm::vec3{ 0.75f,0.75f,0.75f}, glm::vec3{ 7.0f, 7.0f, 7.0f }, false, false, false}));
+        glm::vec3{1.0f,4.95f,5.5f}, glm::vec3{ -1.0f, 4.95f, 5.5f}, glm::vec3{ 1.0f,4.95f,4.5f}, glm::vec3{ 0.75f,0.75f,0.75f}, glm::vec3{ 10.0f, 10.0f, 10.0f }, false, false, false}));
   
     //front triangle
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{ 
-        glm::vec3{-1.2f,0.0f,1.5f}, glm::vec3{ 1.2f, 0.0f, 1.5f}, glm::vec3{ 0.0f,2.4f,1.5f}, glm::vec3{ 0.17f, 0.17f, 0.17f }, glm::vec3{ 0.0f, 0.0f, 0.0f }, false, false, false}));
+   // primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{ 
+     //   glm::vec3{-1.2f,0.0f,1.5f}, glm::vec3{ 1.2f, 0.0f, 1.5f}, glm::vec3{ 0.0f,2.4f,1.5f}, glm::vec3{ 0.2f, 0.2f, 0.2f }, glm::vec3{ 0.0f, 0.0f, 0.0f }, false, false, false}));
     //ground1
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{
         glm::vec3{5.0f,0.0f,0.0f}, glm::vec3{-5.0f, 0.0f, 0.0f}, glm::vec3{ -5.0f,0.0f,10.0f}, glm::vec3{ 1.0f, 1.0f, 1.0f }, glm::vec3{ 0.0f, 0.0f, 0.0f }, false, false, false}));    
@@ -101,19 +101,19 @@ void Scene::load( void )
     
     //mirror left 1                                                                        
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{
-        glm::vec3{0.0f,0.0f,-5.0f}, glm::vec3{ 0.0f, 5.0f,-5.0f}, glm::vec3{ -5.0f,0.0f,0.0f}, glm::vec3{ 0.75f,0.75f,0.75f }, glm::vec3{ 0.0f, 0.0f, 0.0f },true, false, false}));
+        glm::vec3{0.0f,0.0f,-5.0f}, glm::vec3{ 0.0f, 5.0f,-5.0f}, glm::vec3{ -5.0f,0.0f,0.0f}, glm::vec3{ 0.75f,0.75f,0.75f }, glm::vec3{ 0.0f, 0.0f, 0.0f },false, false, false}));
 
     //mirror left 2                                                                        
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{
-        glm::vec3{-5.0f,5.0f,0.0f}, glm::vec3{ 0.0f, 5.0f,-5.0f}, glm::vec3{ -5.0f,0.0f,0.0f}, glm::vec3{ 0.75f,0.75f,0.75f }, glm::vec3{ 0.0f, 0.0f, 0.0f },true, false, false}));
+        glm::vec3{-5.0f,5.0f,0.0f}, glm::vec3{ 0.0f, 5.0f,-5.0f}, glm::vec3{ -5.0f,0.0f,0.0f}, glm::vec3{ 0.75f,0.75f,0.75f }, glm::vec3{ 0.0f, 0.0f, 0.0f },false, false, false}));
     
     //mirror right 1                                                                        
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{
-        glm::vec3{0.0f,0.0f,-5.0f}, glm::vec3{ 0.0f, 5.0f,-5.0f}, glm::vec3{ 5.0f,0.0f,0.0f}, glm::vec3{ 0.75f,0.75f,0.75f }, glm::vec3{ 0.0f, 0.0f, 0.0f },true, false, false}));
+        glm::vec3{0.0f,0.0f,-5.0f}, glm::vec3{ 0.0f, 5.0f,-5.0f}, glm::vec3{ 5.0f,0.0f,0.0f}, glm::vec3{ 0.75f,0.75f,0.75f }, glm::vec3{ 0.0f, 0.0f, 0.0f },false, false, false}));
     
     //mirror right 2                                                                        
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{
-        glm::vec3{5.0f,5.0f,0.0f}, glm::vec3{ 0.0f, 5.0f,-5.0f}, glm::vec3{ 5.0f,0.0f,0.0f}, glm::vec3{ 0.75f,0.75f,0.75f }, glm::vec3{ 0.0f, 0.0f, 0.0f },true, false, false}));
+        glm::vec3{5.0f,5.0f,0.0f}, glm::vec3{ 0.0f, 5.0f,-5.0f}, glm::vec3{ 5.0f,0.0f,0.0f}, glm::vec3{ 0.75f,0.75f,0.75f }, glm::vec3{ 0.0f, 0.0f, 0.0f },false, false, false}));
 
     //ceiling front                                                                        
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{
@@ -159,7 +159,7 @@ void Scene::loadObject(const char * obj)
 
     unsigned int mesh, face;
 
-    float s = 0.8f;
+    float s = 1.0f;
     float t_y = 0.0f;
     float t_x = 0.0f;
     float t_z = 0.0f;
@@ -199,8 +199,116 @@ void Scene::loadObject(const char * obj)
             p3 = p3 * s;
 
             primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{ p1, p2, p3,                                                                                                                                                              
-                glm::vec3 { 1.00f, 0.71f, 0.29f},//brdf.r, brdf.g, brdf.b },
+                glm::vec3 { 0.80f, 0.498f, 0.196f},//brdf.r, brdf.g, brdf.b },
                 glm::vec3 { emittance.r, emittance.g, emittance.b },false, false, true})); 
+        }
+    }
+}
+
+void Scene::loadObjectglass(const char * obj)
+{
+    Assimp::Importer importer;
+    
+    const aiScene* scene2 = importer.ReadFile(obj, aiProcess_Triangulate);
+
+    unsigned int mesh, face;
+
+    float s = 1.0f;
+    float t_y = 0.0f;
+    float t_x = 0.0f;
+    float t_z = 0.0f;
+
+    //srand(std::time(0));
+
+    for (mesh = 0 ; mesh < scene2->mNumMeshes; mesh++) 
+    {
+        aiColor3D brdf = {0,0,0};
+        aiColor3D emittance = {0.0f,0.0f,0.0f};
+        
+        if (scene2->mMaterials) {
+            // Setting up the BRDF and emitance of the mesh
+            scene2->mMaterials[scene2->mMeshes[mesh]->mMaterialIndex]->Get(AI_MATKEY_COLOR_DIFFUSE, brdf);
+            scene2->mMaterials[scene2->mMeshes[mesh]->mMaterialIndex]->Get(AI_MATKEY_COLOR_EMISSIVE, emittance);
+        }
+    
+        for(face = 0; face < scene2->mMeshes[mesh]->mNumFaces; face++)
+        {
+            //float r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+            //float g = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+            //float b = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+
+            glm::vec3 p1 = { (float)scene2->mMeshes[mesh]->mVertices[scene2->mMeshes[mesh]->mFaces[face].mIndices[0]].x, 
+                            (float)scene2->mMeshes[mesh]->mVertices[scene2->mMeshes[mesh]->mFaces[face].mIndices[0]].y, 
+                            (float)scene2->mMeshes[mesh]->mVertices[scene2->mMeshes[mesh]->mFaces[face].mIndices[0]].z};
+            p1 = p1*s;           
+
+            glm::vec3 p2 = { (float)scene2->mMeshes[mesh]->mVertices[scene2->mMeshes[mesh]->mFaces[face].mIndices[1]].x,
+                            (float)scene2->mMeshes[mesh]->mVertices[scene2->mMeshes[mesh]->mFaces[face].mIndices[1]].y,
+                            (float)scene2->mMeshes[mesh]->mVertices[scene2->mMeshes[mesh]->mFaces[face].mIndices[1]].z};            
+            p2 = p2 * s;
+
+            glm::vec3 p3 = { (float)scene2->mMeshes[mesh]->mVertices[scene2->mMeshes[mesh]->mFaces[face].mIndices[2]].x,
+                            (float)scene2->mMeshes[mesh]->mVertices[scene2->mMeshes[mesh]->mFaces[face].mIndices[2]].y,
+                            (float)scene2->mMeshes[mesh]->mVertices[scene2->mMeshes[mesh]->mFaces[face].mIndices[2]].z};
+            p3 = p3 * s;
+
+            primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{ p1, p2, p3,                                                                                                                                                              
+                glm::vec3 { 1.00f, 0.71f, 0.29f},//brdf.r, brdf.g, brdf.b },
+                glm::vec3 { emittance.r, emittance.g, emittance.b },false, true, false}));
+        }
+    }
+}
+
+void Scene::loadObjectdiff(const char * obj)
+{
+    Assimp::Importer importer;
+    
+    const aiScene* scene3 = importer.ReadFile(obj, aiProcess_Triangulate);
+
+    unsigned int mesh, face;
+
+    float s = 1.0f;
+    float t_y = 0.0f;
+    float t_x = 0.0f;
+    float t_z = 0.0f;
+
+    //srand(std::time(0));
+
+    for (mesh = 0 ; mesh < scene3->mNumMeshes; mesh++) 
+    {
+        aiColor3D brdf = {0,0,0};
+        aiColor3D emittance = {0.0f,0.0f,0.0f};
+        
+        if (scene3->mMaterials) {
+            // Setting up the BRDF and emitance of the mesh
+            scene3->mMaterials[scene3->mMeshes[mesh]->mMaterialIndex]->Get(AI_MATKEY_COLOR_DIFFUSE, brdf);
+            scene3->mMaterials[scene3->mMeshes[mesh]->mMaterialIndex]->Get(AI_MATKEY_COLOR_EMISSIVE, emittance);
+        }
+    
+        for(face = 0; face < scene3->mMeshes[mesh]->mNumFaces; face++)
+        {
+            //float r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+            //float g = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+            //float b = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+
+            glm::vec3 p1 = { (float)scene3->mMeshes[mesh]->mVertices[scene3->mMeshes[mesh]->mFaces[face].mIndices[0]].x, 
+                            (float)scene3->mMeshes[mesh]->mVertices[scene3->mMeshes[mesh]->mFaces[face].mIndices[0]].y, 
+                            (float)scene3->mMeshes[mesh]->mVertices[scene3->mMeshes[mesh]->mFaces[face].mIndices[0]].z};
+            p1 = p1*s;           
+
+            glm::vec3 p2 = { (float)scene3->mMeshes[mesh]->mVertices[scene3->mMeshes[mesh]->mFaces[face].mIndices[1]].x,
+                            (float)scene3->mMeshes[mesh]->mVertices[scene3->mMeshes[mesh]->mFaces[face].mIndices[1]].y,
+                            (float)scene3->mMeshes[mesh]->mVertices[scene3->mMeshes[mesh]->mFaces[face].mIndices[1]].z};            
+            p2 = p2 * s;
+
+            glm::vec3 p3 = { (float)scene3->mMeshes[mesh]->mVertices[scene3->mMeshes[mesh]->mFaces[face].mIndices[2]].x,
+                            (float)scene3->mMeshes[mesh]->mVertices[scene3->mMeshes[mesh]->mFaces[face].mIndices[2]].y,
+                            (float)scene3->mMeshes[mesh]->mVertices[scene3->mMeshes[mesh]->mFaces[face].mIndices[2]].z};
+            p3 = p3 * s;
+
+            primitives_.push_back( Primitive::PrimitiveUniquePtr( new Triangle{ p1, p2, p3,                                                                                                                                                              
+                glm::vec3 { 0.153f, 0.235f, 0.556f},//brdf.r, brdf.g, brdf.b },
+                glm::vec3 { emittance.r, emittance.g, emittance.b },false, false, false}));
         }
     }
 }

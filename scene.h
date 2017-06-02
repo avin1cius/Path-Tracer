@@ -44,6 +44,10 @@ public:
 
     void loadObject(const char * obj);
 
+    void loadObjectglass(const char * obj);
+
+    void loadObjectdiff(const char * obj);
+
     std::vector< Primitive::PrimitiveUniquePtr > primitives_;
 
     AccelerationStructure acceleration_structure_ = AccelerationStructure::NONE;
